@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/RoundOverScreen.cs" type="Script" id=1]
+[ext_resource path="res://Fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.25098, 0.180392, 0.396078, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="DynamicFont" id=2]
+size = 36
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 22
+extra_spacing_top = 10
+extra_spacing_bottom = 10
+font_data = ExtResource( 2 )
+
+[node name="RoundOverScreen" type="CanvasLayer"]
+follow_viewport_scale = 4.0
+script = ExtResource( 1 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 984.0
+margin_bottom = 560.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 934.0
+margin_bottom = 510.0
+custom_constants/margin_right = 40
+custom_constants/margin_top = 40
+custom_constants/margin_left = 40
+custom_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 884.0
+margin_bottom = 460.0
+custom_constants/separation = 250
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 844.0
+margin_bottom = 50.0
+custom_fonts/font = SubResource( 2 )
+text = "Round Over"
+align = 1
+
+[node name="ButtonContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 300.0
+margin_right = 844.0
+margin_bottom = 357.0
+
+[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
+margin_left = 370.0
+margin_right = 474.0
+margin_bottom = 57.0
+grow_horizontal = 2
+custom_fonts/font = SubResource( 3 )
+text = "   Reset   "
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/ResetButton" to="." method="OnResetButtonPressed"]
