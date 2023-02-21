@@ -98,7 +98,7 @@ public class TileMap : Godot.TileMap
         GD.Print(StartPos, EndPos);
     }
 
-    public Godot.Collections.Array<Vector2> GetNeighbours(Vector2 Cell)
+    public Godot.Collections.Array<Vector2> GetNeighbours(Vector2 Cell, bool GetAllNeighbours = false)
     {
         var Neighbours = new Godot.Collections.Array<Vector2>();
 
@@ -154,15 +154,18 @@ public class TileMap : Godot.TileMap
 
         // GD.Print(Neighbours.Count);
 
-        // Remove the neighbours containing a unit as they are impassible
-        for (int i = Neighbours.Count - 1; i >= 0; i--)
+        if (!GetAllNeighbours)
         {
-            Vector2 Neighbour = Neighbours[i];
-            foreach (Unit Unit in Units)
+            // Remove the neighbours containing a unit as they are impassible
+            for (int i = Neighbours.Count - 1; i >= 0; i--)
             {
-                if (Unit.CurrentCell == Neighbour)
+                Vector2 Neighbour = Neighbours[i];
+                foreach (Unit Unit in Units)
                 {
-                    Neighbours.RemoveAt(i);
+                    if (Unit.CurrentCell == Neighbour)
+                    {
+                        Neighbours.RemoveAt(i);
+                    }
                 }
             }
         }

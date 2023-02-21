@@ -71,7 +71,7 @@ public class CombatManager : Node2D
                 TurnObject TurnObject = new TurnObject();
                 if (Unit.CanAttack())
                 {
-                    TurnObject = new TurnObject("Attack", Unit, new Godot.Collections.Array<Vector2>(Unit.TargetCell));
+                    TurnObject = new TurnObject("Attack", Unit, Unit.GetDamagedTiles());
                 }
                 else
                 {
@@ -148,7 +148,7 @@ public class CombatManager : Node2D
             // if unit can attack, queue an attack TurnObject
             if (TurnObject.Unit.CanAttack())
             {
-                TurnObject NextTurnObject = new TurnObject("Attack", TurnObject.Unit, new Godot.Collections.Array<Vector2>(TurnObject.Unit.TargetCell));
+                TurnObject NextTurnObject = new TurnObject("Attack", TurnObject.Unit, TurnObject.Unit.GetDamagedTiles());
                 TurnQueue.Add(NextTurnObject);
             }
             else if (TurnObject.Unit.CanMove())

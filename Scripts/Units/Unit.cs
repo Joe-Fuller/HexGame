@@ -15,7 +15,7 @@ public class Unit : Sprite
     public Unit TargetUnit;
     public bool PlayerOwned;
 
-    private TileMap Tilemap;
+    public TileMap Tilemap;
 
     private Label NameText;
     private Label HealthText;
@@ -80,6 +80,15 @@ public class Unit : Sprite
         Godot.Collections.Array<Vector2> Path = Tilemap.AStar(CurrentCell, TargetCell);
         Vector2 NextCell = Path[Path.Count - 2];
         return NextCell;
+    }
+
+    public virtual Godot.Collections.Array<Vector2> GetDamagedTiles()
+    {
+        Godot.Collections.Array<Vector2> DamagedTiles = new Godot.Collections.Array<Vector2>();
+
+        DamagedTiles.Add(TargetCell);
+
+        return DamagedTiles;
     }
 
     public void Attack()
