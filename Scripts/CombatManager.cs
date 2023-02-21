@@ -66,6 +66,7 @@ public class CombatManager : Node2D
             else
             {
                 Unit Unit = TurnOrder[TurnOrderPos];
+                Unit.MovesThisTurn = 0;
                 Unit.GetTarget();
                 TurnObject TurnObject = new TurnObject();
                 if (Unit.CanAttack())
@@ -138,6 +139,7 @@ public class CombatManager : Node2D
             }
             ColorCell(TurnObject.Unit.CurrentCell, 0);
             TurnObject.Unit.Move(TurnObject.TargetTiles[0]);
+            TurnObject.Unit.MovesThisTurn++;
             await ToSignal(GetTree().CreateTimer(TurnTime), "timeout");
             if (IsPaused)
             {
@@ -147,6 +149,11 @@ public class CombatManager : Node2D
             if (TurnObject.Unit.CanAttack())
             {
                 TurnObject NextTurnObject = new TurnObject("Attack", TurnObject.Unit, new Godot.Collections.Array<Vector2>(TurnObject.Unit.TargetCell));
+                TurnQueue.Add(NextTurnObject);
+            }
+            else if (TurnObject.Unit.CanMove())
+            {
+                TurnObject NextTurnObject = new TurnObject("Move", TurnObject.Unit, new Godot.Collections.Array<Vector2>(TurnObject.Unit.GetNextMove()));
                 TurnQueue.Add(NextTurnObject);
             }
 

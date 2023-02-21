@@ -7,6 +7,9 @@ public class Unit : Sprite
     public int Health;
     public int Damage;
     public int Range = 1;
+    public int Movement = 1;
+
+    public int MovesThisTurn = 0;
     public Vector2 CurrentCell;
     public Vector2 TargetCell;
     public Unit TargetUnit;
@@ -39,6 +42,7 @@ public class Unit : Sprite
         Health = 1;
         Damage = 1;
         Range = 1;
+        Movement = 1;
     }
 
     public void GetTarget()
@@ -106,6 +110,11 @@ public class Unit : Sprite
     public bool CanAttack()
     {
         return Tilemap.Distance(CurrentCell, TargetCell) <= Range;
+    }
+
+    public bool CanMove()
+    {
+        return Movement - MovesThisTurn > 0;
     }
 
     public void UpdateText()
