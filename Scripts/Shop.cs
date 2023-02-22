@@ -14,6 +14,13 @@ public class Shop : Node
         Player = GetNode<Player>("../Player");
         Tilemap = GetNode<TileMap>("../Map/TileMap");
         ShopTiles = GetShopTiles();
+        EnterShopMode();
+        // BuyUnit(Tilemap.GetUnitOnTile(new Vector2(1, 1)), new Vector2(5, 3));
+    }
+
+    public void EnterShopMode()
+    {
+        Player.Money = 10;
         PopulateShop();
     }
 
@@ -25,10 +32,28 @@ public class Shop : Node
         {
             int Index = Math.Abs((int)GD.Randi() % NumberOfUnits);
 
-            // the true tag here means the units are PlayerOwned, idk if we want that
-            Tilemap.SpawnUnit(ShopTile, true, Index);
+            Tilemap.SpawnShopUnit(ShopTile, Index);
         }
     }
+
+    public void BuyUnit(Unit Unit, Vector2 TileToPlaceUnitOn)
+    {
+        if (Player.Money >= 3)
+        {
+            Player.Money -= 3;
+            // TODO more about money
+            Unit.PlayerOwned = true;
+            Unit.Move(TileToPlaceUnitOn);
+            Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
+            Tilemap.Units.Add(Unit);
+            Tilemap.ShopUnits.Remove(Unit);
+        }
+        else
+        {
+            GD.Print("Can't Afford Unit");
+        }
+    }
+
 
     private Godot.Collections.Array<Vector2> GetShopTiles()
     {

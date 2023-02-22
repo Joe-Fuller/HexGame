@@ -9,6 +9,7 @@ public class TileMap : Godot.TileMap
     [Export]
     public Godot.Collections.Array<PackedScene> UnitScenes;
     public Godot.Collections.Array<Unit> Units;
+    public Godot.Collections.Array<Unit> ShopUnits;
 
     public Vector2 StartPos = new Vector2(-100, -100);
     public Vector2 EndPos;
@@ -30,11 +31,25 @@ public class TileMap : Godot.TileMap
         Units.Add(NewUnit);
     }
 
+    public void SpawnShopUnit(Vector2 Location, int Index)
+    {
+        Unit NewUnit = (Unit)UnitScenes[Index].Instance();
+
+        NewUnit.PlayerOwned = false;
+        // shop units are currently coloured grey, make sure to change this
+        NewUnit.Texture = (Texture)GD.Load("res://Hexagons/GreyHexagon.png");
+        NewUnit.CurrentCell = Location;
+        AddChild(NewUnit);
+        NewUnit.Initialise(Location);
+        ShopUnits.Add(NewUnit);
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         GD.Randomize();
         Units = new Godot.Collections.Array<Unit>();
+        ShopUnits = new Godot.Collections.Array<Unit>();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -280,5 +295,26 @@ public class TileMap : Godot.TileMap
             }
         }
     }
+
+    public Unit GetUnitOnTile(Vector2 Tile)
+    {
+        foreach (Unit Unit in Units)
+        {
+            if (Unit.CurrentCell == Tile)
+            {
+                return Unit;
+            }
+        }
+        foreach (Unit Unit in ShopUnits)
+        {
+            if (Unit.CurrentCell == Tile)
+            {
+                return Unit;
+            }
+        }
+
+        return null;
+    }
+
 }
 
