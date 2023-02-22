@@ -13,7 +13,7 @@ public class UnitE : Unit
 
     public override Godot.Collections.Array<Vector2> GetDamagedTiles()
     {
-        Godot.Collections.Array<Vector2> DamagedTiles = Tilemap.GetNeighbours(CurrentCell, true);
+        Godot.Collections.Array<Vector2> DamagedTiles = GetNeighbours();
         return DamagedTiles;
     }
 }

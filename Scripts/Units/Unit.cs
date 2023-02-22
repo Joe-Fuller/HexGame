@@ -131,4 +131,9 @@ public class Unit : Sprite
         HealthText.Text = Health.ToString();
         DamageText.Text = Damage.ToString();
     }
+
+    public Godot.Collections.Array<Vector2> GetNeighbours()
+    {
+        return Tilemap.GetNeighbours(CurrentCell, true);
+    }
 }
