@@ -4,6 +4,7 @@ using System;
 public class Unit : Sprite
 {
     public string UnitName;
+    public string UnitIcon;
     public int Health;
     public int Damage;
     public int Range = 1;
@@ -17,7 +18,7 @@ public class Unit : Sprite
 
     public TileMap Tilemap;
 
-    private Label NameText;
+    private Label IconText;
     private Label HealthText;
     private Label DamageText;
 
@@ -27,11 +28,11 @@ public class Unit : Sprite
         SetStats();
 
         //Tilemap = GetNode<TileMap>("../TileMap");
-        NameText = GetNode<Label>("NameText");
+        IconText = GetNode<Label>("IconText");
         HealthText = GetNode<Label>("HealthText");
         DamageText = GetNode<Label>("DamageText");
 
-        NameText.Text = UnitName;
+        IconText.Text = UnitIcon;
         HealthText.Text = Health.ToString();
         DamageText.Text = Damage.ToString();
     }

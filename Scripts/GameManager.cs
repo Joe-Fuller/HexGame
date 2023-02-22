@@ -23,9 +23,9 @@ public class GameManager : Node
             // Tilemap.SpawnUnit(new Vector2(1, 1), true, 8);
             // Tilemap.SpawnUnit(new Vector2(1, 3), true, 4);
             // Tilemap.SpawnUnit(new Vector2(1, 4), true, 2);
-            Tilemap.SpawnUnit(new Vector2(1, 3), true, 5);
-            Tilemap.SpawnUnit(new Vector2(1, 4), true, 5);
-            Tilemap.SpawnUnit(new Vector2(1, 5), true, 5);
+            Tilemap.SpawnUnit(new Vector2(1, 3), true, 0);
+            Tilemap.SpawnUnit(new Vector2(1, 4), true, 1);
+            Tilemap.SpawnUnit(new Vector2(1, 5), true, 2);
             Tilemap.SpawnUnit(new Vector2(5, 3), false, 3);
             CombatManager.SetUnits(Tilemap.Units);
             CombatManager.StartCombat();

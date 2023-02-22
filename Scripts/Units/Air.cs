@@ -1,11 +1,13 @@
 using Godot;
 using System;
 
-public class UnitA : Unit
+public class Air : Unit
 {
     public override void SetStats()
     {
-        UnitName = "A";
+        UnitName = "Air";
+        UnitIcon = "\U0001F701";
+        // UnitIcon = "\uD83D\uDF01";
         Health = 5;
         Damage = 2;
     }
