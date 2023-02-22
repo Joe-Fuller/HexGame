@@ -172,8 +172,9 @@ public class CombatManager : Node2D
             // damage units on target cells
             foreach (Vector2 Tile in TurnObject.TargetTiles)
             {
-                foreach (Unit Unit in Units)
+                for (int i = Units.Count - 1; i >= 0; i--)
                 {
+                    Unit Unit = Units[i];
                     if (Unit.CurrentCell == Tile)
                     {
                         Unit.Health -= TurnObject.Unit.Damage;
