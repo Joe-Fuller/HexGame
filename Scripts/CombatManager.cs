@@ -98,6 +98,7 @@ public class CombatManager : Node2D
     public void SetTurnOrder()
     {
         TurnOrder = Units.Duplicate();
+        TurnOrder.Shuffle();
         bool Swapped = true;
         while (Swapped)
         {
