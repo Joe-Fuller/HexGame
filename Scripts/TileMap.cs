@@ -10,6 +10,7 @@ public class TileMap : Godot.TileMap
     public Godot.Collections.Array<PackedScene> UnitScenes;
     public Godot.Collections.Array<Unit> Units;
     public Godot.Collections.Array<Unit> ShopUnits;
+    public Godot.Collections.Array<Vector2> Tiles;
 
     public Vector2 StartPos = new Vector2(-100, -100);
     public Vector2 EndPos;
@@ -50,6 +51,8 @@ public class TileMap : Godot.TileMap
         GD.Randomize();
         Units = new Godot.Collections.Array<Unit>();
         ShopUnits = new Godot.Collections.Array<Unit>();
+        Tiles = new Godot.Collections.Array<Vector2>();
+        SetTiles();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -314,6 +317,22 @@ public class TileMap : Godot.TileMap
         }
 
         return null;
+    }
+
+    private void SetTiles()
+    {
+
+        for (int i = 3; i < 15; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (GetCell(i, j) != -1)
+                {
+                    Tiles.Add(new Vector2(i, j));
+                }
+            }
+        }
+
     }
 
 }
