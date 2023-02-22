@@ -42,4 +42,9 @@ public class CombatUI : Control
             CombatManager.TurnTime = 4;
         }
     }
+
+    public void OnStartCombatButtonPressed()
+    {
+        CombatManager.StartCombat();
+    }
 }

@@ -41,6 +41,15 @@ margin_bottom = 53.0
 custom_fonts/font = SubResource( 1 )
 text = "Slower"
 
+[node name="StartCombatButton" type="Button" parent="."]
+margin_left = 107.895
+margin_top = 16.1184
+margin_right = 188.895
+margin_bottom = 53.1184
+custom_fonts/font = SubResource( 1 )
+text = "StartCombat"
+
 [connection signal="pressed" from="PauseButton" to="." method="OnPauseButtonPressed"]
 [connection signal="pressed" from="FasterButton" to="." method="OnFasterButtonPressed"]
 [connection signal="pressed" from="SlowerButton" to="." method="OnSlowerButtonPressed"]
+[connection signal="pressed" from="StartCombatButton" to="." method="OnStartCombatButtonPressed"]

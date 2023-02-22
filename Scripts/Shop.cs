@@ -7,7 +7,7 @@ public class Shop : Node
     private TileMap Tilemap;
     private Godot.Collections.Array<Unit> ShopUnits;
     private Godot.Collections.Array<Vector2> ShopTiles;
-    private bool InShopMode = false;
+    public bool InShopMode = false;
     private Unit SelectedUnit;
 
     // Called when the node enters the scene tree for the first time.
@@ -16,7 +16,7 @@ public class Shop : Node
         Player = GetNode<Player>("../Player");
         Tilemap = GetNode<TileMap>("../Map/TileMap");
         ShopTiles = GetShopTiles();
-        EnterShopMode();
+        // EnterShopMode();
         // BuyUnit(Tilemap.GetUnitOnTile(new Vector2(1, 1)), new Vector2(5, 3));
     }
 

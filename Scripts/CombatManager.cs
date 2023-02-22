@@ -38,6 +38,7 @@ public class CombatManager : Node2D
 
     public async void StartCombat()
     {
+        SetUnits(Tilemap.Units);
         InCombat = true;
         SetTurnOrder();
         int TurnsTaken = 0;
