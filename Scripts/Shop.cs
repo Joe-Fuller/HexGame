@@ -5,7 +5,7 @@ public class Shop : Node
 {
     private Player Player;
     private TileMap Tilemap;
-    private Godot.Collections.Array<Unit> ShopUnits;
+    public Godot.Collections.Array<Unit> ShopUnits;
     private Godot.Collections.Array<Vector2> ShopTiles;
     public bool InShopMode = false;
     private Unit SelectedUnit;
@@ -23,25 +23,25 @@ public class Shop : Node
 
     public override void _Process(float delta)
     {
-        if (Input.IsActionJustPressed("left_click") && InShopMode)
-        {
-            Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
-            Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos);
+        // if (Input.IsActionJustPressed("left_click") && InShopMode)
+        // {
+        //     Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
+        //     Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos);
 
-            if (ShopTiles.Contains(ClickedTile))
-            {
-                SelectedUnit = GetUnitOnTile(ClickedTile);
-                if (SelectedUnit != null)
-                {
-                    GD.Print("Selected Unit: ", SelectedUnit.Name);
-                }
-            }
-            else if (Tilemap.Tiles.Contains(ClickedTile) && SelectedUnit != null)
-            {
-                BuyUnit(SelectedUnit, ClickedTile);
-                SelectedUnit = null;
-            }
-        }
+        //     if (ShopTiles.Contains(ClickedTile))
+        //     {
+        //         SelectedUnit = GetUnitOnTile(ClickedTile);
+        //         if (SelectedUnit != null)
+        //         {
+        //             GD.Print("Selected Unit: ", SelectedUnit.Name);
+        //         }
+        //     }
+        //     else if (Tilemap.Tiles.Contains(ClickedTile) && SelectedUnit != null)
+        //     {
+        //         BuyUnit(SelectedUnit, ClickedTile);
+        //         SelectedUnit = null;
+        //     }
+        // }
     }
 
     public void EnterShopMode()

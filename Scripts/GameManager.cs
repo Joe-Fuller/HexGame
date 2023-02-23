@@ -7,6 +7,7 @@ public class GameManager : Node
     public CombatManager CombatManager;
     public Player Player;
     public Shop Shop;
+    public Unit SelectedUnit;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -20,20 +21,66 @@ public class GameManager : Node
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
-        if (Input.IsActionJustPressed("left_click") && !CombatManager.InCombat && !Shop.InShopMode)
+        if (Input.IsActionJustPressed("left_click"))
         {
-            // Tilemap.SpawnUnit(new Vector2(1, 1), true, 8);
-            // Tilemap.SpawnUnit(new Vector2(1, 3), true, 4);
-            // Tilemap.SpawnUnit(new Vector2(1, 4), true, 2);
-            // Tilemap.SpawnUnit(new Vector2(4, 1), true, 0);
-            // Tilemap.SpawnUnit(new Vector2(4, 2), true, 1);
-            // Tilemap.SpawnUnit(new Vector2(4, 3), true, 2);
-            // Tilemap.SpawnUnit(new Vector2(4, 4), true, 3);
-            // Tilemap.SpawnUnit(new Vector2(4, 5), true, 4);
-            // Tilemap.SpawnUnit(new Vector2(10, 3), false, 3);
-            // CombatManager.SetUnits(Tilemap.Units);
-            // CombatManager.StartCombat();
-            Shop.EnterShopMode();
+            Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
+            Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos);
+
+            if (GetUnitOnTile(ClickedTile) != null)
+            {
+                SelectedUnit = GetUnitOnTile(ClickedTile);
+                GD.Print("Selected Unit: ", SelectedUnit.Name);
+            }
+
+            // SHOP
+            if (Shop.InShopMode)
+            {
+                // BUY SELECTED UNIT
+                if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 3 && ClickedTile.x > 3 && ClickedTile.x < 7)
+                {
+                    Shop.BuyUnit(SelectedUnit, ClickedTile);
+                    SelectedUnit = null;
+                }
+
+                // MOVE OWNED UNIT
+                if (SelectedUnit != null && SelectedUnit.CurrentCell.x > 3 && ClickedTile.x > 3 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
+                {
+                    SelectedUnit.Move(ClickedTile);
+                }
+
+            }
+
+            // COMBAT
+            else if (CombatManager.InCombat)
+            {
+
+            }
+
+            // FIRST CLICK ON GAME TO ENTER SHOP MODE
+            if (!CombatManager.InCombat && !Shop.InShopMode)
+            {
+                Shop.EnterShopMode();
+            }
         }
+
+        // right click to deselect
+        if (Input.IsActionJustPressed("right_click"))
+        {
+            SelectedUnit = null;
+            GD.Print("Selected Unit: None");
+        }
+    }
+
+    private Unit GetUnitOnTile(Vector2 Tile)
+    {
+        foreach (Unit Unit in Tilemap.Units + Shop.ShopUnits)
+        {
+            if (Unit.CurrentCell == Tile)
+            {
+                return Unit;
+            }
+        }
+
+        return null;
     }
 }
