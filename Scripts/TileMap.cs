@@ -369,7 +369,6 @@ public class TileMap : Godot.TileMap
 
     public void ClearEnemyUnits()
     {
-        GD.Print(Units.Count);
         for (int i = Units.Count - 1; i > 0; i--)
         {
             if (!Units[i].PlayerOwned)
@@ -377,7 +376,6 @@ public class TileMap : Godot.TileMap
                 Units.RemoveAt(i);
             }
         }
-        GD.Print(Units.Count);
     }
 }
 

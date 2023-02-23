@@ -41,6 +41,7 @@ public class CombatManager : Node2D
         GenerateEnemyTeam();
         SetCombatUnits(Tilemap.Units);
         InCombat = true;
+        TurnOrderPos = 0;
         SetTurnOrder();
         int TurnsTaken = 0;
         while (InCombat)

@@ -15,6 +15,7 @@ public class Shop : Node
     {
         Player = GetNode<Player>("../Player");
         Tilemap = GetNode<TileMap>("../Map/TileMap");
+        ShopUnits = new Godot.Collections.Array<Unit>();
         ShopTiles = GetShopTiles();
         // EnterShopMode();
         // BuyUnit(Tilemap.GetUnitOnTile(new Vector2(1, 1)), new Vector2(5, 3));
@@ -47,6 +48,7 @@ public class Shop : Node
     {
         InShopMode = true;
         Player.Money = 10;
+        ClearShop();
         PopulateShop();
     }
 
@@ -55,7 +57,16 @@ public class Shop : Node
         InShopMode = false;
     }
 
-    public void PopulateShop()
+    private void ClearShop()
+    {
+        while (ShopUnits.Count > 0)
+        {
+            ShopUnits[0].QueueFree();
+            ShopUnits.RemoveAt(0);
+        }
+    }
+
+    private void PopulateShop()
     {
         int NumberOfUnits = Tilemap.UnitScenes.Count;
 
