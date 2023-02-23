@@ -30,7 +30,10 @@ public class Shop : Node
             if (ShopTiles.Contains(ClickedTile))
             {
                 SelectedUnit = GetUnitOnTile(ClickedTile);
-                GD.Print("Selected Unit: ", SelectedUnit.Name);
+                if (SelectedUnit != null)
+                {
+                    GD.Print("Selected Unit: ", SelectedUnit.Name);
+                }
             }
             else if (Tilemap.Tiles.Contains(ClickedTile) && SelectedUnit != null)
             {

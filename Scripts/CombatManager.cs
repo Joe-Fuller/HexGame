@@ -38,6 +38,7 @@ public class CombatManager : Node2D
 
     public async void StartCombat()
     {
+        GenerateEnemyTeam();
         SetUnits(Tilemap.Units);
         InCombat = true;
         SetTurnOrder();
@@ -66,7 +67,7 @@ public class CombatManager : Node2D
             }
             else
             {
-                Unit Unit = TurnOrder[TurnOrderPos];
+                Unit Unit = GetNextUnit();
                 Unit.MovesThisTurn = 0;
                 Unit.GetTarget();
                 TurnObject TurnObject = new TurnObject();
@@ -83,6 +84,8 @@ public class CombatManager : Node2D
                 if (TurnOrderPos >= TurnOrder.Count)
                 {
                     TurnOrderPos = 0;
+                    // Call SetTurnOrder() here to shuffle the Unit turn order (higher damage units will still go first, but equal damage units may have their order shuffled)
+                    SetTurnOrder();
                 }
             }
 
@@ -115,6 +118,23 @@ public class CombatManager : Node2D
                 }
             }
         }
+    }
+
+    private Unit GetNextUnit()
+    {
+        Unit NextUnit = TurnOrder[TurnOrderPos];
+        while (NextUnit == null)
+        {
+            TurnOrderPos++;
+            if (TurnOrderPos >= TurnOrder.Count)
+            {
+                TurnOrderPos = 0;
+                // Call SetTurnOrder() here to shuffle the Unit turn order (higher damage units will still go first, but equal damage units may have their order shuffled)
+                SetTurnOrder();
+            }
+            NextUnit = TurnOrder[TurnOrderPos];
+        }
+        return NextUnit;
     }
 
     private async void TakeTurn(TurnObject TurnObject)
@@ -266,5 +286,12 @@ public class CombatManager : Node2D
     {
         EmitSignal("Unpaused");
         IsPaused = false;
+    }
+
+    private void GenerateEnemyTeam()
+    {
+        Tilemap.SpawnUnit(new Vector2(10, 1), false, 0);
+        Tilemap.SpawnUnit(new Vector2(10, 2), false, 1);
+        Tilemap.SpawnUnit(new Vector2(10, 3), false, 2);
     }
 }
