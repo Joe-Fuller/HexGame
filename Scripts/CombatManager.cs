@@ -31,6 +31,7 @@ public class CombatManager : Node2D
         TurnTimer = GetNode<Timer>("./Turn Timer");
         BlueHex = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
         RedHex = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
+        Units = new Godot.Collections.Array<Unit>();
         TurnQueue = new Godot.Collections.Array<TurnObject>();
         TurnOrder = new Godot.Collections.Array<Unit>();
         RoundOverScreen = GetNode<RoundOverScreen>("../RoundOverScreen");

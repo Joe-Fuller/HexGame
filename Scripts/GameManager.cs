@@ -86,9 +86,10 @@ public class GameManager : Node
 
     public Unit GetUnitOnTile(Vector2 Tile)
     {
-        foreach (Unit Unit in Tilemap.Units + Shop.ShopUnits)
+        // returns only VISIBLE units
+        foreach (Unit Unit in Tilemap.Units + Shop.ShopUnits + CombatManager.Units)
         {
-            if (Unit.CurrentCell == Tile)
+            if (Unit.Visible && Unit.CurrentCell == Tile)
             {
                 return Unit;
             }
