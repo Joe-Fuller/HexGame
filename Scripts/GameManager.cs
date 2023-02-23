@@ -7,6 +7,7 @@ public class GameManager : Node
     public CombatManager CombatManager;
     public Player Player;
     public Shop Shop;
+    public UnitInfoScreen UnitInfoScreen;
     public Unit SelectedUnit;
 
     // Called when the node enters the scene tree for the first time.
@@ -16,6 +17,7 @@ public class GameManager : Node
         CombatManager = GetNode<CombatManager>("./CombatManager");
         Player = GetNode<Player>("./Player");
         Shop = GetNode<Shop>("./Shop");
+        UnitInfoScreen = GetNode<UnitInfoScreen>("./UnitInfoScreen");
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,6 +31,7 @@ public class GameManager : Node
             if (GetUnitOnTile(ClickedTile) != null)
             {
                 SelectedUnit = GetUnitOnTile(ClickedTile);
+                UnitInfoScreen.SetText(SelectedUnit);
                 GD.Print("Selected Unit: ", SelectedUnit.Name);
             }
 
@@ -69,9 +72,19 @@ public class GameManager : Node
             SelectedUnit = null;
             GD.Print("Selected Unit: None");
         }
+
+        if (Input.IsActionJustPressed("left_ctrl"))
+        {
+            UnitInfoScreen.Visible = true;
+        }
+
+        if (Input.IsActionJustReleased("left_ctrl"))
+        {
+            UnitInfoScreen.Visible = false;
+        }
     }
 
-    private Unit GetUnitOnTile(Vector2 Tile)
+    public Unit GetUnitOnTile(Vector2 Tile)
     {
         foreach (Unit Unit in Tilemap.Units + Shop.ShopUnits)
         {

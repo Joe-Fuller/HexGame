@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/CombatManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameManager.cs" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/RoundOverScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Shop.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/UnitInfoScreen.tscn" type="PackedScene" id=7]
 
 [node name="GameManager" type="Node"]
 script = ExtResource( 2 )
@@ -25,3 +26,5 @@ current = true
 zoom = Vector2( 3, 3 )
 
 [node name="Shop" parent="." instance=ExtResource( 6 )]
+
+[node name="UnitInfoScreen" parent="." instance=ExtResource( 7 )]
