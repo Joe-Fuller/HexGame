@@ -102,6 +102,7 @@ public class CombatManager : Node2D
             Units.Add(Tilemap.CloneUnit(IncUnit));
             IncUnit.Visible = false;
         }
+        Tilemap.CombatUnits = Units;
     }
 
     public void SetTurnOrder()
@@ -284,6 +285,26 @@ public class CombatManager : Node2D
     {
         RoundOverScreen.Visible = true;
         RoundOverScreen.SetTitle(PlayerWon);
+
+        // Destroy all the remaining Combat Units
+        while (Units.Count > 0)
+        {
+            DestroyUnit(Units[0]);
+        }
+
+        // Make the Non-Combat Player Units Visible
+        // MAKE SURE TO DESTROY THE OLD ENEMY UNITS AT SOME POINT
+        foreach (Unit Unit in Tilemap.Units)
+        {
+            if (Unit.PlayerOwned)
+            {
+                Unit.Visible = true;
+            }
+        }
+
+        Tilemap.ClearEnemyUnits();
+
+        Tilemap.ResetAllCellColours();
     }
 
     public void Unpause()
@@ -302,11 +323,6 @@ public class CombatManager : Node2D
     private void DestroyUnit(Unit Unit)
     {
         Units.Remove(Unit);
-        // TurnOrder.Remove(Unit);
-        Unit.Visible = false;
-        if (!Unit.PlayerOwned)
-        {
-            Unit.QueueFree();
-        }
+        Unit.QueueFree();
     }
 }

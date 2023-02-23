@@ -38,7 +38,6 @@ public class Shop : Node
             else if (Tilemap.Tiles.Contains(ClickedTile) && SelectedUnit != null)
             {
                 BuyUnit(SelectedUnit, ClickedTile);
-                GD.Print("Bought Unit: ", SelectedUnit.Name, " Remaining Money: ", Player.Money);
                 SelectedUnit = null;
             }
         }
@@ -81,6 +80,7 @@ public class Shop : Node
             Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
             Tilemap.Units.Add(Unit);
             Tilemap.ShopUnits.Remove(Unit);
+            GD.Print("Bought Unit: ", Unit.Name, " Remaining Money: ", Player.Money);
         }
         else
         {

@@ -9,6 +9,7 @@ public class TileMap : Godot.TileMap
     [Export]
     public Godot.Collections.Array<PackedScene> UnitScenes;
     public Godot.Collections.Array<Unit> Units;
+    public Godot.Collections.Array<Unit> CombatUnits;
     public Godot.Collections.Array<Unit> ShopUnits;
     public Godot.Collections.Array<Vector2> Tiles;
 
@@ -50,6 +51,7 @@ public class TileMap : Godot.TileMap
     {
         GD.Randomize();
         Units = new Godot.Collections.Array<Unit>();
+        CombatUnits = new Godot.Collections.Array<Unit>();
         ShopUnits = new Godot.Collections.Array<Unit>();
         Tiles = new Godot.Collections.Array<Vector2>();
         SetTiles();
@@ -178,7 +180,7 @@ public class TileMap : Godot.TileMap
             for (int i = Neighbours.Count - 1; i >= 0; i--)
             {
                 Vector2 Neighbour = Neighbours[i];
-                foreach (Unit Unit in Units)
+                foreach (Unit Unit in CombatUnits)
                 {
                     if (Unit.CurrentCell == Neighbour)
                     {
@@ -324,7 +326,7 @@ public class TileMap : Godot.TileMap
 
         for (int i = 3; i < 15; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 6; j++)
             {
                 if (GetCell(i, j) != -1)
                 {
@@ -363,6 +365,19 @@ public class TileMap : Godot.TileMap
         ClonedUnit.Initialise(ClonedUnit.CurrentCell);
 
         return ClonedUnit;
+    }
+
+    public void ClearEnemyUnits()
+    {
+        GD.Print(Units.Count);
+        for (int i = Units.Count - 1; i > 0; i--)
+        {
+            if (!Units[i].PlayerOwned)
+            {
+                Units.RemoveAt(i);
+            }
+        }
+        GD.Print(Units.Count);
     }
 }
 

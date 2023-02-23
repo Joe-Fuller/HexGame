@@ -57,6 +57,7 @@ public class Unit : Sprite
         {
             if (Unit.PlayerOwned != this.PlayerOwned && Unit != this && Tilemap.Distance(CurrentCell, Unit.CurrentCell) < MinDist)
             {
+                MinDist = Tilemap.Distance(CurrentCell, Unit.CurrentCell);
                 TargetUnit = Unit;
                 TargetCell = TargetUnit.CurrentCell;
             }
