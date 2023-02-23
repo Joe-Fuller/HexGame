@@ -38,7 +38,7 @@ public class Shop : Node
             else if (Tilemap.Tiles.Contains(ClickedTile) && SelectedUnit != null)
             {
                 BuyUnit(SelectedUnit, ClickedTile);
-                GD.Print("Bought Unit: ", SelectedUnit, " Remaining Money: ", Player.Money);
+                GD.Print("Bought Unit: ", SelectedUnit.Name, " Remaining Money: ", Player.Money);
                 SelectedUnit = null;
             }
         }

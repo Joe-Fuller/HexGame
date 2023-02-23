@@ -335,5 +335,22 @@ public class TileMap : Godot.TileMap
 
     }
 
+    public Unit CloneUnit(Unit Unit)
+    {
+        int UnitIndex = 0;
+        Unit ClonedUnit = (Unit)UnitScenes[UnitIndex].Instance();
+        ClonedUnit.PlayerOwned = Unit.PlayerOwned;
+        if (!ClonedUnit.PlayerOwned)
+        {
+            ClonedUnit.Texture = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
+        }
+        ClonedUnit.Health = Unit.Health;
+        ClonedUnit.Damage = Unit.Damage;
+        ClonedUnit.CurrentCell = Unit.CurrentCell;
+        AddChild(ClonedUnit);
+        ClonedUnit.Initialise(ClonedUnit.CurrentCell);
+
+        return ClonedUnit;
+    }
 }
 

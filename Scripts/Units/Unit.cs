@@ -27,6 +27,8 @@ public class Unit : Sprite
     {
         SetStats();
 
+        Tilemap = GetNode<TileMap>("..");
+
         //Tilemap = GetNode<TileMap>("../TileMap");
         IconText = GetNode<Label>("IconText");
         HealthText = GetNode<Label>("HealthText");
@@ -46,12 +48,14 @@ public class Unit : Sprite
         Movement = 1;
     }
 
-    public void GetTarget()
+    public void GetTarget(Godot.Collections.Array<Unit> Units)
     {
+        int MinDist = 100;
+
         // look through each enemy unit, find closest
-        foreach (Unit Unit in Tilemap.Units)
+        foreach (Unit Unit in Units)
         {
-            if (Unit.PlayerOwned != this.PlayerOwned && Unit != this)
+            if (Unit.PlayerOwned != this.PlayerOwned && Unit != this && Tilemap.Distance(CurrentCell, Unit.CurrentCell) < MinDist)
             {
                 TargetUnit = Unit;
                 TargetCell = TargetUnit.CurrentCell;
@@ -90,21 +94,6 @@ public class Unit : Sprite
         DamagedTiles.Add(TargetCell);
 
         return DamagedTiles;
-    }
-
-    public void Attack()
-    {
-        TargetUnit.TakeDamage(Damage);
-    }
-
-    public void TakeDamage(int IncDamage)
-    {
-        Health -= IncDamage;
-        if (Health <= 0)
-        {
-            Tilemap.Units.Remove(this);
-            QueueFree();
-        }
     }
 
     public void Initialise(Vector2 CellCoords)

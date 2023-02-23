@@ -39,7 +39,7 @@ public class CombatManager : Node2D
     public async void StartCombat()
     {
         GenerateEnemyTeam();
-        SetUnits(Tilemap.Units);
+        SetCombatUnits(Tilemap.Units);
         InCombat = true;
         SetTurnOrder();
         int TurnsTaken = 0;
@@ -69,7 +69,7 @@ public class CombatManager : Node2D
             {
                 Unit Unit = GetNextUnit();
                 Unit.MovesThisTurn = 0;
-                Unit.GetTarget();
+                Unit.GetTarget(Units);
                 TurnObject TurnObject = new TurnObject();
                 if (Unit.CanAttack())
                 {
@@ -94,9 +94,14 @@ public class CombatManager : Node2D
 
     }
 
-    public void SetUnits(Godot.Collections.Array<Unit> IncUnits)
+    public void SetCombatUnits(Godot.Collections.Array<Unit> IncUnits)
     {
-        Units = IncUnits;
+        Units = new Godot.Collections.Array<Unit>();
+        foreach (Unit IncUnit in IncUnits)
+        {
+            Units.Add(Tilemap.CloneUnit(IncUnit));
+            IncUnit.Visible = false;
+        }
     }
 
     public void SetTurnOrder()
@@ -203,8 +208,7 @@ public class CombatManager : Node2D
                         Unit.UpdateText();
                         if (Unit.Health <= 0)
                         {
-                            Units.Remove(Unit);
-                            Unit.QueueFree();
+                            DestroyUnit(Unit);
                         }
                     }
                 }
@@ -228,32 +232,32 @@ public class CombatManager : Node2D
         EmitSignal("TurnCompleted");
     }
 
-    private void TakeNextTurn()
-    {
-        Unit CurrUnit = Units[0];
-        Vector2 CellUnitStartedTurnOn = CurrUnit.CurrentCell;
-        ColorCell(CellUnitStartedTurnOn, CurrUnit.PlayerOwned ? 1 : 2);
-        Tilemap.SetCell((int)CellUnitStartedTurnOn.x, (int)CellUnitStartedTurnOn.y, CurrUnit.PlayerOwned ? 2 : 1);
+    // private void TakeNextTurn()
+    // {
+    //     Unit CurrUnit = Units[0];
+    //     Vector2 CellUnitStartedTurnOn = CurrUnit.CurrentCell;
+    //     ColorCell(CellUnitStartedTurnOn, CurrUnit.PlayerOwned ? 1 : 2);
+    //     Tilemap.SetCell((int)CellUnitStartedTurnOn.x, (int)CellUnitStartedTurnOn.y, CurrUnit.PlayerOwned ? 2 : 1);
 
-        CurrUnit.GetTarget();
+    //     CurrUnit.GetTarget();
 
-        //move toward target, then attack if in range
-        if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) > 1)
-        {
-            CurrUnit.MoveTowardTarget();
-        }
+    //     //move toward target, then attack if in range
+    //     if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) > 1)
+    //     {
+    //         CurrUnit.MoveTowardTarget();
+    //     }
 
-        if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) == 1)
-        {
-            GD.Print("Attacking");
-            CurrUnit.Attack();
-        }
+    //     if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) == 1)
+    //     {
+    //         GD.Print("Attacking");
+    //         CurrUnit.Attack();
+    //     }
 
-        ColorCell(CellUnitStartedTurnOn, 0);
-        Units.RemoveAt(0);
-        Units.Add(CurrUnit);
-        Tilemap.ResetAllCellColours();
-    }
+    //     ColorCell(CellUnitStartedTurnOn, 0);
+    //     Units.RemoveAt(0);
+    //     Units.Add(CurrUnit);
+    //     Tilemap.ResetAllCellColours();
+    // }
 
     private void ColorCell(Vector2 Cell, int Colour)
     {
@@ -293,5 +297,16 @@ public class CombatManager : Node2D
         Tilemap.SpawnUnit(new Vector2(10, 1), false, 0);
         Tilemap.SpawnUnit(new Vector2(10, 2), false, 1);
         Tilemap.SpawnUnit(new Vector2(10, 3), false, 2);
+    }
+
+    private void DestroyUnit(Unit Unit)
+    {
+        Units.Remove(Unit);
+        // TurnOrder.Remove(Unit);
+        Unit.Visible = false;
+        if (!Unit.PlayerOwned)
+        {
+            Unit.QueueFree();
+        }
     }
 }
