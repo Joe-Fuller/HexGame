@@ -338,6 +338,18 @@ public class TileMap : Godot.TileMap
     public Unit CloneUnit(Unit Unit)
     {
         int UnitIndex = 0;
+        // Weird magic function to search the UnitScenes for the right index
+        for (int i = 0; i < UnitScenes.Count; i++)
+        {
+            PackedScene UnitScene = UnitScenes[i];
+            Godot.Collections.Dictionary WeirdUnitSceneDictionary = UnitScene._Bundled;
+            String[] StringArray = WeirdUnitSceneDictionary["names"] as String[];
+            string UnitSceneUnitName = StringArray[0];
+            if (UnitSceneUnitName == Unit.UnitName)
+            {
+                UnitIndex = i;
+            }
+        }
         Unit ClonedUnit = (Unit)UnitScenes[UnitIndex].Instance();
         ClonedUnit.PlayerOwned = Unit.PlayerOwned;
         if (!ClonedUnit.PlayerOwned)
