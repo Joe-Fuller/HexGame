@@ -8,6 +8,7 @@ public class GameManager : Node
     public Player Player;
     public Shop Shop;
     public UnitInfoScreen UnitInfoScreen;
+    public CameraController CameraController;
     public Unit SelectedUnit;
 
     // Called when the node enters the scene tree for the first time.
@@ -18,6 +19,7 @@ public class GameManager : Node
         Player = GetNode<Player>("./Player");
         Shop = GetNode<Shop>("./Shop");
         UnitInfoScreen = GetNode<UnitInfoScreen>("./UnitInfoScreen");
+        CameraController = GetNode<CameraController>("./Camera2D");
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.

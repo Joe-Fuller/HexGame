@@ -4,9 +4,11 @@ using System;
 public class CombatUI : Control
 {
     public CombatManager CombatManager;
+    private GameManager GameManager;
     public override void _Ready()
     {
         CombatManager = GetParent<CombatManager>();
+        GameManager = GetNode<GameManager>("../..");
     }
 
     public void OnPauseButtonPressed()
@@ -45,6 +47,7 @@ public class CombatUI : Control
 
     public void OnStartCombatButtonPressed()
     {
+        GameManager.CameraController.MoveToCombatPosition();
         CombatManager.StartCombat();
     }
 }

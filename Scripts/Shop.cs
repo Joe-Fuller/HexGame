@@ -5,6 +5,7 @@ public class Shop : Node
 {
     private Player Player;
     private TileMap Tilemap;
+    private GameManager GameManager;
     public Godot.Collections.Array<Unit> ShopUnits;
     private Godot.Collections.Array<Vector2> ShopTiles;
     public bool InShopMode = false;
@@ -15,6 +16,7 @@ public class Shop : Node
     {
         Player = GetNode<Player>("../Player");
         Tilemap = GetNode<TileMap>("../Map/TileMap");
+        GameManager = GetNode<GameManager>("..");
         ShopUnits = new Godot.Collections.Array<Unit>();
         ShopTiles = GetShopTiles();
         // EnterShopMode();
@@ -46,6 +48,7 @@ public class Shop : Node
 
     public void EnterShopMode()
     {
+        GameManager.CameraController.MoveToShopPosition();
         InShopMode = true;
         Player.Money = 10;
         ClearShop();
@@ -54,6 +57,7 @@ public class Shop : Node
 
     private void ExitShopMode()
     {
+        GameManager.CameraController.MoveToCombatPosition();
         InShopMode = false;
     }
 
