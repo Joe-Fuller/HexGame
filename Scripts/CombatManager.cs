@@ -8,11 +8,12 @@ public class CombatManager : Node2D
 
     public Godot.Collections.Array<Unit> Units;
     public TileMap Tilemap;
+    public GameManager GameManager;
     public bool InCombat;
     public bool IsPaused = false;
-    public Timer TurnTimer;
     private Texture BlueHex;
     private Texture RedHex;
+    private Godot.Collections.Array<Vector2> EnemySpawnTiles;
 
 
 
@@ -28,13 +29,15 @@ public class CombatManager : Node2D
     public override void _Ready()
     {
         Tilemap = GetNode<TileMap>("../Map/TileMap");
-        TurnTimer = GetNode<Timer>("./Turn Timer");
+        GameManager = GetNode<GameManager>("..");
         BlueHex = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
         RedHex = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
         Units = new Godot.Collections.Array<Unit>();
         TurnQueue = new Godot.Collections.Array<TurnObject>();
         TurnOrder = new Godot.Collections.Array<Unit>();
         RoundOverScreen = GetNode<RoundOverScreen>("../RoundOverScreen");
+        EnemySpawnTiles = new Godot.Collections.Array<Vector2>();
+        SetEnemySpawnTiles();
     }
 
     public async void StartCombat()
@@ -234,34 +237,6 @@ public class CombatManager : Node2D
         // ColorCell(TurnObject.Unit.CurrentCell, 0);
         EmitSignal("TurnCompleted");
     }
-
-    // private void TakeNextTurn()
-    // {
-    //     Unit CurrUnit = Units[0];
-    //     Vector2 CellUnitStartedTurnOn = CurrUnit.CurrentCell;
-    //     ColorCell(CellUnitStartedTurnOn, CurrUnit.PlayerOwned ? 1 : 2);
-    //     Tilemap.SetCell((int)CellUnitStartedTurnOn.x, (int)CellUnitStartedTurnOn.y, CurrUnit.PlayerOwned ? 2 : 1);
-
-    //     CurrUnit.GetTarget();
-
-    //     //move toward target, then attack if in range
-    //     if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) > 1)
-    //     {
-    //         CurrUnit.MoveTowardTarget();
-    //     }
-
-    //     if (Tilemap.Distance(CurrUnit.CurrentCell, CurrUnit.TargetCell) == 1)
-    //     {
-    //         GD.Print("Attacking");
-    //         CurrUnit.Attack();
-    //     }
-
-    //     ColorCell(CellUnitStartedTurnOn, 0);
-    //     Units.RemoveAt(0);
-    //     Units.Add(CurrUnit);
-    //     Tilemap.ResetAllCellColours();
-    // }
-
     private void ColorCell(Vector2 Cell, int Colour)
     {
         Tilemap.SetCell((int)Cell.x, (int)Cell.y, Colour);
@@ -317,9 +292,55 @@ public class CombatManager : Node2D
 
     private void GenerateEnemyTeam()
     {
-        Tilemap.SpawnUnit(new Vector2(10, 1), false, 0);
-        Tilemap.SpawnUnit(new Vector2(10, 2), false, 1);
-        Tilemap.SpawnUnit(new Vector2(10, 3), false, 2);
+        int PlayerUnitCount = 0;
+        foreach (Unit Unit in Tilemap.Units)
+        {
+            if (Unit.PlayerOwned)
+            {
+                PlayerUnitCount++;
+            }
+        }
+        // at this points Units should only contain Player Units
+        for (int i = 0; i < PlayerUnitCount - 1; i++)
+        {
+            GD.Print(i);
+            SpawnRandomEnemyUnit();
+        }
+    }
+
+    private void SpawnRandomEnemyUnit()
+    {
+        EnemySpawnTiles.Shuffle();
+        int TileIndex = 0;
+        Vector2 Tile = EnemySpawnTiles[0];
+        while (GameManager.GetUnitOnTile(Tile) != null)
+        {
+            TileIndex++;
+            if (TileIndex == EnemySpawnTiles.Count)
+            {
+                GD.Print("All Tiles Occupied");
+            }
+            Tile = EnemySpawnTiles[TileIndex];
+        }
+
+        int Index = (int)GD.RandRange(0, Tilemap.UnitScenes.Count - 1);
+        Tilemap.SpawnUnit(Tile, false, Index);
+    }
+
+    private void SetEnemySpawnTiles()
+    {
+        for (int i = 10; i < 15; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (Tilemap.GetCell(i, j) != -1)
+                {
+                    EnemySpawnTiles.Add(new Vector2(i, j));
+                }
+            }
+        }
+        GD.Print(EnemySpawnTiles.Count);
+        GD.Print(EnemySpawnTiles);
     }
 
     private void DestroyUnit(Unit Unit)
