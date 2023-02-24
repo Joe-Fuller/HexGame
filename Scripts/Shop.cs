@@ -48,7 +48,7 @@ public class Shop : Node
 
     public void EnterShopMode()
     {
-        GameManager.CameraController.MoveToShopPosition();
+        GameManager.CameraController.SetTargetXPos(-1000);
         InShopMode = true;
         Player.Money = 10;
         ClearShop();
@@ -57,7 +57,6 @@ public class Shop : Node
 
     private void ExitShopMode()
     {
-        GameManager.CameraController.MoveToCombatPosition();
         InShopMode = false;
     }
 
