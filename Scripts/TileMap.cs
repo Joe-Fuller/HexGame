@@ -3,10 +3,6 @@ using System;
 
 public class TileMap : Godot.TileMap
 {
-    [Export]
-    public PackedScene UnitScene;
-
-    [Export]
     public Godot.Collections.Array<PackedScene> UnitScenes;
     public Godot.Collections.Array<Unit> Units;
     public Godot.Collections.Array<Unit> CombatUnits;
@@ -55,45 +51,8 @@ public class TileMap : Godot.TileMap
         ShopUnits = new Godot.Collections.Array<Unit>();
         Tiles = new Godot.Collections.Array<Vector2>();
         SetTiles();
-    }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
-    {
-        //   if (Input.IsActionJustPressed("left_click"))
-        //   {
-        // 	// Reset the selected cell and its neighbours colours
-        // 	SetCell((int)SelectedCell.x, (int)SelectedCell.y, 0);
-        // 	foreach (var Cell in GetNeighbours(SelectedCell))
-        // 	{
-        // 		SetCell((int)Cell.x, (int)Cell.y, 0);
-        // 	}
-
-        // 	var Mousepos = GetGlobalMousePosition();
-        // 	var ClickedCell = WorldToMap(Mousepos);
-
-        // 	GD.Print(Distance(SelectedCell, ClickedCell));
-
-        // 	if (GetCell((int)ClickedCell.x, (int)ClickedCell.y) != -1)
-        // 	{
-        // 		if (SelectedCell.x != -100)
-        // 		{
-        // 			foreach (Vector2 Cell in AStar(SelectedCell, ClickedCell))
-        // 			{
-        // 				SetCell((int)Cell.x, (int)Cell.y, 2);
-        // 			}
-        // 		}
-        // 		SelectedCell = ClickedCell;
-        // 		SetCell((int)SelectedCell.x, (int)SelectedCell.y, 2);
-        // 		var Neighbours = GetNeighbours(ClickedCell);
-        // 		foreach (var Cell in Neighbours)
-        // 		{
-        // 			SetCell((int)Cell.x, (int)Cell.y, 1);
-        // 		}
-        // 	}
-
-
-        //   } 
+        CollectUnitScenes();
     }
 
     public void FindCell(Vector2 Mousepos)
@@ -376,6 +335,32 @@ public class TileMap : Godot.TileMap
                 Units.RemoveAt(i);
             }
         }
+    }
+
+    public void CollectUnitScenes()
+    {
+        UnitScenes = new Godot.Collections.Array<PackedScene>();
+        Directory Dir = new Directory();
+        Dir.Open("res://Scenes/Units");
+        Dir.ListDirBegin();
+
+        while (true)
+        {
+            var Scene = Dir.GetNext();
+            if (Scene == "")
+            {
+                break;
+            }
+            if (!Scene.BeginsWith(".") && Scene != "Unit.tscn")
+            {
+                PackedScene UnitScene = ResourceLoader.Load<PackedScene>("res://Scenes/Units/" + Scene);
+                UnitScenes.Add(UnitScene);
+            }
+        }
+
+        Dir.ListDirEnd();
+
+
     }
 }
 
