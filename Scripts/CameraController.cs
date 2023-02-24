@@ -3,6 +3,7 @@ using System;
 
 public class CameraController : Camera2D
 {
+    [Signal] private delegate void ReachedLocation();
     private float TargetXPos = 0;
     private float SmoothSpeed = 1.5f;
 
@@ -12,6 +13,10 @@ public class CameraController : Camera2D
         float PosDiff = TargetXPos - Position.x;
         Vector2 SmoothedVelocity = new Vector2(PosDiff * SmoothSpeed * delta, 0);
         Position += SmoothedVelocity;
+        if (Math.Abs(Position.x - TargetXPos) < 2)
+        {
+            EmitSignal("ReachedLocation");
+        }
     }
 
     public void SetTargetXPos(float NewXPos)

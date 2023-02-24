@@ -48,6 +48,7 @@ public class CombatManager : Node2D
         TurnOrderPos = 0;
         SetTurnOrder();
         int TurnsTaken = 0;
+        await ToSignal(GameManager.CameraController, "ReachedLocation");
         while (InCombat)
         {
             if (IsPaused)
@@ -303,7 +304,6 @@ public class CombatManager : Node2D
         // at this points Units should only contain Player Units
         for (int i = 0; i < PlayerUnitCount - 1; i++)
         {
-            GD.Print(i);
             SpawnRandomEnemyUnit();
         }
     }
@@ -339,8 +339,6 @@ public class CombatManager : Node2D
                 }
             }
         }
-        GD.Print(EnemySpawnTiles.Count);
-        GD.Print(EnemySpawnTiles);
     }
 
     private void DestroyUnit(Unit Unit)
