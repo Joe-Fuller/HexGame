@@ -30,3 +30,4 @@ script = ExtResource( 8 )
 [node name="Shop" parent="." instance=ExtResource( 6 )]
 
 [node name="UnitInfoScreen" parent="." instance=ExtResource( 7 )]
+visible = false
