@@ -48,9 +48,14 @@ public class GameManager : Node
                 }
 
                 // MOVE OWNED UNIT
-                if (SelectedUnit != null && SelectedUnit.CurrentCell.x > 3 && ClickedTile.x > 3 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
+                if (SelectedUnit != null && SelectedUnit.CurrentCell.x > 0 && ClickedTile.x > 0 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
                 {
+                    Vector2 PrevTile = SelectedUnit.CurrentCell;
                     SelectedUnit.Move(ClickedTile);
+                    if (SelectedUnit.CurrentCell != PrevTile)
+                    {
+                        SelectedUnit = null;
+                    }
                 }
 
             }

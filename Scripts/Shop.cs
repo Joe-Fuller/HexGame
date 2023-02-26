@@ -8,6 +8,7 @@ public class Shop : Node
     private GameManager GameManager;
     public Godot.Collections.Array<Unit> ShopUnits;
     private Godot.Collections.Array<Vector2> ShopTiles;
+    public Godot.Collections.Array<UnitPack> UnitPacks;
     public bool InShopMode = false;
     private Unit SelectedUnit;
 
@@ -19,6 +20,8 @@ public class Shop : Node
         GameManager = GetNode<GameManager>("..");
         ShopUnits = new Godot.Collections.Array<Unit>();
         ShopTiles = GetShopTiles();
+        UnitPacks = new Godot.Collections.Array<UnitPack>();
+        SetUnitPacks();
         // EnterShopMode();
         // BuyUnit(Tilemap.GetUnitOnTile(new Vector2(1, 1)), new Vector2(5, 3));
     }
@@ -48,11 +51,12 @@ public class Shop : Node
 
     public void EnterShopMode()
     {
-        GameManager.CameraController.SetTargetXPos(-1000);
+        GameManager.CameraController.SetTargetXPos(-1400);
         InShopMode = true;
         Player.Money = 10;
-        ClearShop();
-        PopulateShop();
+        // ClearShop();
+        // PopulateShop();
+        FillShopPacks();
     }
 
     private void ExitShopMode()
@@ -130,5 +134,54 @@ public class Shop : Node
             }
         }
         return null;
+    }
+
+    private void SetUnitPacks()
+    {
+        // Unit Pack 1
+        UnitPack UnitPack1 = GetNode<UnitPack>("./UnitPack1");
+        UnitPack1.SetTiles(new Godot.Collections.Array<Vector2>(
+            new Vector2(-1, 0),
+            new Vector2(-1, 1),
+            new Vector2(-2, 1)
+        ));
+        UnitPacks.Add(UnitPack1);
+
+        // Unit Pack 2
+        UnitPack UnitPack2 = GetNode<UnitPack>("./UnitPack2");
+        UnitPack2.SetTiles(new Godot.Collections.Array<Vector2>(
+            new Vector2(-2, 3),
+            new Vector2(-3, 2),
+            new Vector2(-3, 3)
+        ));
+        UnitPacks.Add(UnitPack2);
+
+        // Unit Pack 3        
+        UnitPack UnitPack3 = GetNode<UnitPack>("./UnitPack3");
+        UnitPack3.SetTiles(new Godot.Collections.Array<Vector2>(
+            new Vector2(-1, 4),
+            new Vector2(-1, 5),
+            new Vector2(-2, 5)
+        ));
+        UnitPacks.Add(UnitPack3);
+    }
+
+    private void FillShopPacks()
+    {
+        int NumberOfUnits = Tilemap.UnitScenes.Count;
+
+        foreach (UnitPack UnitPack in UnitPacks)
+        {
+            foreach (Vector2 Tile in UnitPack.Tiles)
+            {
+                int Index = Math.Abs((int)GD.Randi() % NumberOfUnits);
+
+                Tilemap.SpawnShopUnit(Tile, Index);
+
+                UnitPack.Units.Add(Tilemap.ShopUnits[Tilemap.ShopUnits.Count - 1]);
+            }
+        }
+
+
     }
 }

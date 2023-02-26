@@ -47,7 +47,7 @@ public class CombatUI : Control
 
     public void OnStartCombatButtonPressed()
     {
-        GameManager.CameraController.SetTargetXPos(0);
+        GameManager.CameraController.SetTargetXPos(150);
         CombatManager.StartCombat();
     }
 }

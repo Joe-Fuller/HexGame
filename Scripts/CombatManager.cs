@@ -105,8 +105,11 @@ public class CombatManager : Node2D
         Units = new Godot.Collections.Array<Unit>();
         foreach (Unit IncUnit in IncUnits)
         {
-            Units.Add(Tilemap.CloneUnit(IncUnit));
-            IncUnit.Visible = false;
+            if (IncUnit.CurrentCell.x > 3)
+            {
+                Units.Add(Tilemap.CloneUnit(IncUnit));
+                IncUnit.Visible = false;
+            }
         }
         Tilemap.CombatUnits = Units;
     }
