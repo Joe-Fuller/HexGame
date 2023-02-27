@@ -10,6 +10,7 @@ public class Shop : Node
     private Godot.Collections.Array<Vector2> ShopTiles;
     public Godot.Collections.Array<UnitPack> UnitPacks;
     public bool InShopMode = false;
+    public bool CanSelectUnitPack = false;
     private Unit SelectedUnit;
 
     // Called when the node enters the scene tree for the first time.
@@ -53,6 +54,7 @@ public class Shop : Node
     {
         GameManager.CameraController.SetTargetXPos(-1400);
         InShopMode = true;
+        CanSelectUnitPack = true;
         Player.Money = 10;
         // ClearShop();
         // PopulateShop();
@@ -172,16 +174,64 @@ public class Shop : Node
 
         foreach (UnitPack UnitPack in UnitPacks)
         {
+            // reset the unit array first
+            UnitPack.Units = new Godot.Collections.Array<Unit>();
             foreach (Vector2 Tile in UnitPack.Tiles)
             {
                 int Index = Math.Abs((int)GD.Randi() % NumberOfUnits);
 
                 Tilemap.SpawnShopUnit(Tile, Index);
 
-                UnitPack.Units.Add(Tilemap.ShopUnits[Tilemap.ShopUnits.Count - 1]);
+                Unit SpawnedUnit = Tilemap.ShopUnits[Tilemap.ShopUnits.Count - 1];
+
+                ShopUnits.Add(SpawnedUnit);
+                UnitPack.Units.Add(SpawnedUnit);
             }
         }
+    }
 
+    public void BuyUnitPack(UnitPack SelectedUnitPack)
+    {
+        foreach (UnitPack UnitPack in UnitPacks)
+        {
+            if (UnitPack == SelectedUnitPack)
+            {
+                foreach (Unit Unit in UnitPack.Units)
+                {
+                    Unit.PlayerOwned = true;
+                    // Move Unit to Bench automatically?
+                    // Unit.Move(TileToPlaceUnitOn);
+                    Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
+                    Tilemap.Units.Add(Unit);
+                    Tilemap.ShopUnits.Remove(Unit);
+                }
+            }
+            else
+            {
+                // Removes the Units and makes them invisible
+                foreach (Unit Unit in UnitPack.Units)
+                {
+                    ShopUnits.Remove(Unit);
+                    Unit.Visible = false;
+                }
+            }
+        }
+        CanSelectUnitPack = false;
+    }
 
+    public void BuyUnitPackFromUnit(Unit SelectedUnit)
+    {
+        foreach (UnitPack UnitPack in UnitPacks)
+        {
+            foreach (Unit Unit in UnitPack.Units)
+            {
+                if (Unit == SelectedUnit)
+                {
+                    BuyUnitPack(UnitPack);
+                    return;
+                }
+            }
+        }
+        GD.Print("Unit Not Found - In Shop.BuyUnitPackFromUnit");
     }
 }

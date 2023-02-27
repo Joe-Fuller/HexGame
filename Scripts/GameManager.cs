@@ -40,15 +40,22 @@ public class GameManager : Node
             // SHOP
             if (Shop.InShopMode)
             {
-                // BUY SELECTED UNIT
-                if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 3 && ClickedTile.x > 3 && ClickedTile.x < 7)
+                // // BUY SELECTED UNIT (replaced by SELECT UNIT PACK)
+                // if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 3 && ClickedTile.x > 3 && ClickedTile.x < 7)
+                // {
+                //     Shop.BuyUnit(SelectedUnit, ClickedTile);
+                //     SelectedUnit = null;
+                // }
+
+                // SELECT UNIT PACK
+                if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 1 && Shop.CanSelectUnitPack)
                 {
-                    Shop.BuyUnit(SelectedUnit, ClickedTile);
+                    Shop.BuyUnitPackFromUnit(SelectedUnit);
                     SelectedUnit = null;
                 }
 
                 // MOVE OWNED UNIT
-                if (SelectedUnit != null && SelectedUnit.CurrentCell.x > 0 && ClickedTile.x > 0 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
+                if (SelectedUnit != null && ClickedTile.x > 0 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
                 {
                     Vector2 PrevTile = SelectedUnit.CurrentCell;
                     SelectedUnit.Move(ClickedTile);
@@ -104,4 +111,6 @@ public class GameManager : Node
 
         return null;
     }
+
+
 }
