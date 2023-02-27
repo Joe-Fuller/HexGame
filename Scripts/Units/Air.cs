@@ -10,6 +10,7 @@ public class Air : Unit
         // UnitIcon = "\uD83D\uDF01";
         Health = 5;
         Damage = 2;
+        Description = "";
     }
 
 }

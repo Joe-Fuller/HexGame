@@ -7,8 +7,10 @@ public class Unit : Sprite
     public string UnitIcon;
     public int Health;
     public int Damage;
+    public string Description;
     public int Range = 1;
     public int Movement = 1;
+    public bool Haste = false;
 
     public int MovesThisTurn = 0;
     public Vector2 CurrentCell;
@@ -21,6 +23,7 @@ public class Unit : Sprite
     private Label IconText;
     private Label HealthText;
     private Label DamageText;
+    private Label DescriptionText;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -44,8 +47,10 @@ public class Unit : Sprite
         UnitName = "X";
         Health = 1;
         Damage = 1;
+        Description = "X";
         Range = 1;
         Movement = 1;
+        Haste = false;
     }
 
     public void GetTarget(Godot.Collections.Array<Unit> Units)

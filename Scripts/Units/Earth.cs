@@ -9,6 +9,7 @@ public class Earth : Unit
         UnitIcon = "\U0001F703";
         Health = 2;
         Damage = 2;
+        Description = "Can Move Twice Each Turn";
         Movement = 2;
     }
 

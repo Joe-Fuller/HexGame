@@ -10,6 +10,7 @@ public class Aquafortis : Unit
         UnitIcon = "\U0001F705";
         Health = 2;
         Damage = 5;
+        Description = "Also Damages Tiles Either Side of Target";
     }
 
     public override Godot.Collections.Array<Vector2> GetDamagedTiles()

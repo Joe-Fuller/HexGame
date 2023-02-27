@@ -10,6 +10,7 @@ public class Water : Unit
         UnitIcon = "\U0001F704";
         Health = 4;
         Damage = 2;
+        Description = "Damages ALL Adjacent Tiles";
     }
 
     public override Godot.Collections.Array<Vector2> GetDamagedTiles()

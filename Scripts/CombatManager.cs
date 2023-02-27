@@ -119,12 +119,31 @@ public class CombatManager : Node2D
         TurnOrder = Units.Duplicate();
         TurnOrder.Shuffle();
         bool Swapped = true;
+
+        // First sort to order by Damage
         while (Swapped)
         {
             Swapped = false;
             for (int i = 1; i < TurnOrder.Count; i++)
             {
                 if (TurnOrder[i - 1].Damage < TurnOrder[i].Damage)
+                {
+                    Unit Temp = TurnOrder[i - 1];
+                    TurnOrder[i - 1] = TurnOrder[i];
+                    TurnOrder[i] = Temp;
+                    Swapped = true;
+                }
+            }
+        }
+
+        // Second sort to put Haste Units first
+        Swapped = true;
+        while (Swapped)
+        {
+            Swapped = false;
+            for (int i = 1; i < TurnOrder.Count; i++)
+            {
+                if (!TurnOrder[i - 1].Haste && TurnOrder[i].Haste)
                 {
                     Unit Temp = TurnOrder[i - 1];
                     TurnOrder[i - 1] = TurnOrder[i];

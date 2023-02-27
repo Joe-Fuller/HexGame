@@ -8,6 +8,7 @@ public class UnitInfoScreen : CanvasLayer
     Label IconText;
     Label HealthText;
     Label DamageText;
+    Label DescriptionText;
 
     GameManager GameManager;
 
@@ -20,6 +21,7 @@ public class UnitInfoScreen : CanvasLayer
         IconText = GetNode<Label>("./Panel/IconText");
         HealthText = GetNode<Label>("./Panel/HealthText");
         DamageText = GetNode<Label>("./Panel/DamageText");
+        DescriptionText = GetNode<Label>("./Panel/DescriptionText");
         GameManager = GetNode<GameManager>("..");
     }
 
@@ -50,5 +52,6 @@ public class UnitInfoScreen : CanvasLayer
         IconText.Text = Unit.UnitIcon;
         HealthText.Text = Unit.Health.ToString() + " Health";
         DamageText.Text = Unit.Damage.ToString() + " Damage";
+        DescriptionText.Text = Unit.Description;
     }
 }
