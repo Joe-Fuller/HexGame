@@ -48,7 +48,7 @@ public class UnitInfoScreen : CanvasLayer
     {
         NameText.Text = Unit.UnitName;
         IconText.Text = Unit.UnitIcon;
-        HealthText.Text = Unit.Health.ToString();
-        DamageText.Text = Unit.Damage.ToString();
+        HealthText.Text = Unit.Health.ToString() + " Health";
+        DamageText.Text = Unit.Damage.ToString() + " Damage";
     }
 }
