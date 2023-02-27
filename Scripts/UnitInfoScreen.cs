@@ -39,8 +39,8 @@ public class UnitInfoScreen : CanvasLayer
             }
 
             // I think the divide by 3 is necessary because the camera is zoomed out 3
-            Panel.SetPosition(MousePos / 3);
-
+            // Addition by Camera Pos is because I'm bad I think
+            Panel.SetPosition((MousePos - GameManager.CameraController.Position) / 3);
         }
     }
 
