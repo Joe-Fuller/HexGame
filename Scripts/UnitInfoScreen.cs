@@ -53,5 +53,11 @@ public class UnitInfoScreen : CanvasLayer
         HealthText.Text = Unit.Health.ToString() + " Health";
         DamageText.Text = Unit.Damage.ToString() + " Damage";
         DescriptionText.Text = Unit.Description;
+
+        // Ive changed my mind about doing this rn but the stuff below will be useful
+
+        // Set Size based on DescriptionText size
+        // GD.Print(DescriptionText.GetRect());
+        // Panel.RectSize = new Vector2(320, 100);
     }
 }
