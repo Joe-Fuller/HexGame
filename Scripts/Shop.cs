@@ -56,7 +56,7 @@ public class Shop : Node
         InShopMode = true;
         CanSelectUnitPack = true;
         Player.Money = 10;
-        // ClearShop();
+        ClearShop();
         // PopulateShop();
         FillShopPacks();
     }
@@ -204,6 +204,7 @@ public class Shop : Node
                     Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
                     Tilemap.Units.Add(Unit);
                     Tilemap.ShopUnits.Remove(Unit);
+                    ShopUnits.Remove(Unit);
                 }
             }
             else
@@ -211,6 +212,7 @@ public class Shop : Node
                 // Removes the Units and makes them invisible
                 foreach (Unit Unit in UnitPack.Units)
                 {
+                    Tilemap.ShopUnits.Remove(Unit);
                     ShopUnits.Remove(Unit);
                     Unit.Visible = false;
                 }
