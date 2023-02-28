@@ -7,7 +7,7 @@ public class Aqua_Vitae : Unit
     {
         UnitName = "Aqua Vitae";
         UnitIcon = "\U0001F708";
-        Health = 5;
+        Health = 10;
         Damage = 2;
         Haste = true;
         Description = "This Unit is First in Combat";

@@ -8,8 +8,8 @@ public class Water : Unit
     {
         UnitName = "Water";
         UnitIcon = "\U0001F704";
-        Health = 4;
-        Damage = 2;
+        Health = 6;
+        Damage = 1;
         Description = "Damages ALL Adjacent Tiles";
     }
 

@@ -8,8 +8,8 @@ public class Aquafortis : Unit
     {
         UnitName = "Aquafortis";
         UnitIcon = "\U0001F705";
-        Health = 2;
-        Damage = 5;
+        Health = 7;
+        Damage = 2;
         Description = "Also Damages Tiles Either Side of Target";
     }
 

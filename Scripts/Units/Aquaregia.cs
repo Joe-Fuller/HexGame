@@ -7,8 +7,8 @@ public class Aquaregia : Unit
     {
         UnitName = "Aquaregia";
         UnitIcon = "\U0001F706";
-        Health = 1;
-        Damage = 5;
+        Health = 12;
+        Damage = 2;
         Description = "Also Damages Tile Behind the Target";
     }
 

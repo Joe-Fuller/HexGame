@@ -8,7 +8,7 @@ public class Vinegar : Unit
     {
         UnitName = "Vinegar";
         UnitIcon = "\U0001F70A";
-        Health = 2;
+        Health = 14;
         Damage = 2;
         Description = "Targets the Weakest Enemy";
     }
