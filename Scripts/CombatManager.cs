@@ -266,7 +266,10 @@ public class CombatManager : Node2D
     }
     private void ColorCell(Vector2 Cell, int Colour)
     {
-        Tilemap.SetCell((int)Cell.x, (int)Cell.y, Colour);
+        if (Tilemap.GetCellv(Cell) != -1)
+        {
+            Tilemap.SetCell((int)Cell.x, (int)Cell.y, Colour);
+        }
     }
 
     private bool IsWinner()
