@@ -5,7 +5,7 @@ public class CameraController : Camera2D
 {
     [Signal] private delegate void ReachedLocation();
     private float TargetXPos = 0;
-    private float SmoothSpeed = 1.5f;
+    private float SmoothSpeed = 2.5f;
 
     public override void _Process(float delta)
     {

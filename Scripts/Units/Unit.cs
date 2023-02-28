@@ -53,7 +53,7 @@ public class Unit : Sprite
         Haste = false;
     }
 
-    public void GetTarget(Godot.Collections.Array<Unit> Units)
+    public virtual void GetTarget(Godot.Collections.Array<Unit> Units)
     {
         int MinDist = 100;
 

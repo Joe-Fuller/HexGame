@@ -3,10 +3,12 @@ using Godot;
 public class RoundOverScreen : CanvasLayer
 {
     Label Title;
+    Button Button;
     private GameManager GameManager;
     public override void _Ready()
     {
         Title = GetNode<Label>("PanelContainer/MarginContainer/VBoxContainer/Title");
+        Button = GetNode<Button>("PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/ResetButton");
         GameManager = GetNode<GameManager>("..");
     }
 
@@ -20,5 +22,6 @@ public class RoundOverScreen : CanvasLayer
     public void SetTitle(bool PlayerWon)
     {
         Title.Text = (PlayerWon ? "You Won!" : "You Lost!");
+        Button.Text = (PlayerWon ? "Next Round" : "Reset");
     }
 }
