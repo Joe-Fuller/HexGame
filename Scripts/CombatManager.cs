@@ -252,8 +252,7 @@ public class CombatManager : Node2D
                     Unit Unit = Units[i];
                     if (Unit.CurrentCell == Tile)
                     {
-                        Unit.CombatHealth -= TurnObject.Unit.Damage;
-                        Unit.UpdateText();
+                        TurnObject.Unit.DealDamage(Unit);
                         if (Unit.CombatHealth <= 0)
                         {
                             DestroyUnit(Unit);

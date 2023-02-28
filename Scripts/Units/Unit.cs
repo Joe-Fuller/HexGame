@@ -138,4 +138,10 @@ public class Unit : Sprite
 
     public virtual void DoBuff(Unit Unit)
     { }
+
+    public virtual void DealDamage(Unit Unit)
+    {
+        Unit.CombatHealth -= Damage;
+        Unit.UpdateText();
+    }
 }
