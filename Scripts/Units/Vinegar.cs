@@ -27,6 +27,5 @@ public class Vinegar : Unit
                 TargetCell = TargetUnit.CurrentCell;
             }
         }
-        GD.Print(TargetUnit.UnitName);
     }
 }
