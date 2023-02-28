@@ -12,7 +12,7 @@ public class Aquaregia : Unit
         Description = "Also Damages Tile Behind the Target";
     }
 
-    public override Godot.Collections.Array<Vector2> GetDamagedTiles()
+    public override Godot.Collections.Array<Vector2> GetAffectedTiles()
     {
         // im confident this could be generalised, but it works
         // to expand to more tiles just go again with CurrentCell = TargetCell (OG) and TargetCell = Cell generated first time around

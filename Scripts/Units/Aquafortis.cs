@@ -13,7 +13,7 @@ public class Aquafortis : Unit
         Description = "Also Damages Tiles Either Side of Target";
     }
 
-    public override Godot.Collections.Array<Vector2> GetDamagedTiles()
+    public override Godot.Collections.Array<Vector2> GetAffectedTiles()
     {
         Godot.Collections.Array<Vector2> DamagedTiles = new Godot.Collections.Array<Vector2>();
 

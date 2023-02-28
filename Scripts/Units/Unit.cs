@@ -11,6 +11,7 @@ public class Unit : Sprite
     public int Range = 1;
     public int Movement = 1;
     public bool Haste = false;
+    public bool DoesBuffs = false;
     public int CombatHealth;
 
     public int MovesThisTurn = 0;
@@ -52,6 +53,7 @@ public class Unit : Sprite
         Range = 1;
         Movement = 1;
         Haste = false;
+        DoesBuffs = false;
     }
 
     public virtual void GetTarget(Godot.Collections.Array<Unit> Units)
@@ -94,7 +96,7 @@ public class Unit : Sprite
         return NextCell;
     }
 
-    public virtual Godot.Collections.Array<Vector2> GetDamagedTiles()
+    public virtual Godot.Collections.Array<Vector2> GetAffectedTiles()
     {
         Godot.Collections.Array<Vector2> DamagedTiles = new Godot.Collections.Array<Vector2>();
 
@@ -133,4 +135,7 @@ public class Unit : Sprite
     {
         return Tilemap.GetNeighbours(CurrentCell, true);
     }
+
+    public virtual void DoBuff(Unit Unit)
+    { }
 }

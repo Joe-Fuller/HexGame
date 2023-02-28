@@ -79,7 +79,14 @@ public class CombatManager : Node2D
                 TurnObject TurnObject = new TurnObject();
                 if (Unit.CanAttack())
                 {
-                    TurnObject = new TurnObject("Attack", Unit, Unit.GetDamagedTiles());
+                    if (Unit.DoesBuffs)
+                    {
+                        TurnObject = new TurnObject("Buff", Unit, Unit.GetAffectedTiles());
+                    }
+                    else
+                    {
+                        TurnObject = new TurnObject("Attack", Unit, Unit.GetAffectedTiles());
+                    }
                 }
                 else
                 {
@@ -208,8 +215,16 @@ public class CombatManager : Node2D
             // if unit can attack, queue an attack TurnObject
             if (TurnObject.Unit.CanAttack())
             {
-                TurnObject NextTurnObject = new TurnObject("Attack", TurnObject.Unit, TurnObject.Unit.GetDamagedTiles());
-                TurnQueue.Add(NextTurnObject);
+                if (TurnObject.Unit.DoesBuffs)
+                {
+                    TurnObject NextTurnObject = new TurnObject("Buff", TurnObject.Unit, TurnObject.Unit.GetAffectedTiles());
+                    TurnQueue.Add(NextTurnObject);
+                }
+                else
+                {
+                    TurnObject NextTurnObject = new TurnObject("Attack", TurnObject.Unit, TurnObject.Unit.GetAffectedTiles());
+                    TurnQueue.Add(NextTurnObject);
+                }
             }
             else if (TurnObject.Unit.CanMove())
             {
@@ -243,6 +258,45 @@ public class CombatManager : Node2D
                         {
                             DestroyUnit(Unit);
                         }
+                    }
+                }
+            }
+            await ToSignal(GetTree().CreateTimer(TurnTime), "timeout");
+            if (IsPaused)
+            {
+                await ToSignal(this, "Unpaused");
+            }
+            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            {
+                ColorCell(Tile, 0);
+            }
+            await ToSignal(GetTree().CreateTimer(TurnTime), "timeout");
+            if (IsPaused)
+            {
+                await ToSignal(this, "Unpaused");
+            }
+        }
+        if (TurnObject.Type == "Buff")
+        {
+            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            {
+                ColorCell(Tile, TurnObject.Unit.PlayerOwned ? 3 : 4);
+            }
+            await ToSignal(GetTree().CreateTimer(TurnTime), "timeout");
+            if (IsPaused)
+            {
+                await ToSignal(this, "Unpaused");
+            }
+            // damage units on target cells
+            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            {
+                for (int i = Units.Count - 1; i >= 0; i--)
+                {
+                    Unit Unit = Units[i];
+                    if (Unit.CurrentCell == Tile)
+                    {
+                        TurnObject.Unit.DoBuff(Unit);
+                        Unit.UpdateText();
                     }
                 }
             }

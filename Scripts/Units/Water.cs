@@ -13,7 +13,7 @@ public class Water : Unit
         Description = "Damages ALL Adjacent Tiles";
     }
 
-    public override Godot.Collections.Array<Vector2> GetDamagedTiles()
+    public override Godot.Collections.Array<Vector2> GetAffectedTiles()
     {
         Godot.Collections.Array<Vector2> DamagedTiles = GetNeighbours();
         return DamagedTiles;
