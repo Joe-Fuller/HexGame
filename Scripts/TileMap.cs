@@ -234,9 +234,9 @@ public class TileMap : Godot.TileMap
 
     public void ResetAllCellColours()
     {
-        for (int i = 0; i < 30; i++)
+        for (int i = -10; i < 20; i++)
         {
-            for (int j = 0; j < 30; j++)
+            for (int j = 0; j < 10; j++)
             {
                 if (GetCell(i, j) != -1)
                 {

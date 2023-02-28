@@ -32,9 +32,7 @@ public class GameManager : Node
 
             if (GetUnitOnTile(ClickedTile) != null)
             {
-                SelectedUnit = GetUnitOnTile(ClickedTile);
-                UnitInfoScreen.SetText(SelectedUnit);
-                GD.Print("Selected Unit: ", SelectedUnit.Name);
+                SelectUnit(GetUnitOnTile(ClickedTile));
             }
 
             // SHOP
@@ -51,7 +49,7 @@ public class GameManager : Node
                 if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 1 && Shop.CanSelectUnitPack)
                 {
                     Shop.BuyUnitPackFromUnit(SelectedUnit);
-                    SelectedUnit = null;
+                    DeselectUnit();
                 }
 
                 // MOVE OWNED UNIT
@@ -61,6 +59,7 @@ public class GameManager : Node
                     SelectedUnit.Move(ClickedTile);
                     if (SelectedUnit.CurrentCell != PrevTile)
                     {
+                        Tilemap.SetCellv(PrevTile, 0);
                         SelectedUnit = null;
                     }
                 }
@@ -83,7 +82,7 @@ public class GameManager : Node
         // right click to deselect
         if (Input.IsActionJustPressed("right_click"))
         {
-            SelectedUnit = null;
+            DeselectUnit();
             GD.Print("Selected Unit: None");
         }
 
@@ -112,5 +111,26 @@ public class GameManager : Node
         return null;
     }
 
+    private void SelectUnit(Unit Unit)
+    {
+        // Decolours current selected tile, sets SelectedUnit, colours new selected tile
+        if (SelectedUnit != null)
+        {
+            Tilemap.SetCellv(SelectedUnit.CurrentCell, 0);
+        }
+        SelectedUnit = Unit;
+        // UnitInfoScreen.SetText(SelectedUnit); idk why this line was here
+        Tilemap.SetCellv(Unit.CurrentCell, 2);
+        GD.Print(Unit.CurrentCell);
+    }
+
+    private void DeselectUnit()
+    {
+        if (SelectedUnit != null)
+        {
+            Tilemap.SetCellv(SelectedUnit.CurrentCell, 0);
+        }
+        SelectedUnit = null;
+    }
 
 }
