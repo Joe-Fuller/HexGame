@@ -11,6 +11,7 @@ public class Unit : Sprite
     public int Range = 1;
     public int Movement = 1;
     public bool Haste = false;
+    public int CombatHealth;
 
     public int MovesThisTurn = 0;
     public Vector2 CurrentCell;
@@ -124,7 +125,7 @@ public class Unit : Sprite
 
     public void UpdateText()
     {
-        HealthText.Text = Health.ToString();
+        HealthText.Text = CombatHealth.ToString();
         DamageText.Text = Damage.ToString();
     }
 

@@ -121,7 +121,6 @@ public class GameManager : Node
         SelectedUnit = Unit;
         // UnitInfoScreen.SetText(SelectedUnit); idk why this line was here
         Tilemap.SetCellv(Unit.CurrentCell, 2);
-        GD.Print(Unit.CurrentCell);
     }
 
     private void DeselectUnit()

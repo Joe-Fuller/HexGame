@@ -20,9 +20,9 @@ public class Vinegar : Unit
         // look through each enemy unit, find closest
         foreach (Unit Unit in Units)
         {
-            if (Unit.PlayerOwned != this.PlayerOwned && Unit != this && Unit.Health < MinHealth)
+            if (Unit.PlayerOwned != this.PlayerOwned && Unit != this && Unit.CombatHealth < MinHealth)
             {
-                MinHealth = Unit.Health;
+                MinHealth = Unit.CombatHealth;
                 TargetUnit = Unit;
                 TargetCell = TargetUnit.CurrentCell;
             }

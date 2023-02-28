@@ -111,6 +111,10 @@ public class CombatManager : Node2D
                 IncUnit.Visible = false;
             }
         }
+        foreach (Unit Unit in Units)
+        {
+            Unit.CombatHealth = Unit.Health;
+        }
         Tilemap.CombatUnits = Units;
     }
 
@@ -233,9 +237,9 @@ public class CombatManager : Node2D
                     Unit Unit = Units[i];
                     if (Unit.CurrentCell == Tile)
                     {
-                        Unit.Health -= TurnObject.Unit.Damage;
+                        Unit.CombatHealth -= TurnObject.Unit.Damage;
                         Unit.UpdateText();
-                        if (Unit.Health <= 0)
+                        if (Unit.CombatHealth <= 0)
                         {
                             DestroyUnit(Unit);
                         }
