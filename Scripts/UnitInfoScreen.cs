@@ -32,7 +32,7 @@ public class UnitInfoScreen : CanvasLayer
         {
             // update position and info
             Vector2 MousePos = GameManager.Tilemap.GetGlobalMousePosition();
-            Vector2 TileMousedOver = GameManager.Tilemap.WorldToMap(MousePos);
+            Vector2 TileMousedOver = GameManager.Tilemap.WorldToMap(MousePos * 2);
             Unit MousedOverUnit = GameManager.GetUnitOnTile(TileMousedOver);
 
             if (MousedOverUnit != null)
@@ -40,12 +40,10 @@ public class UnitInfoScreen : CanvasLayer
                 SetText(MousedOverUnit);
             }
 
-            // I think the divide by 3 is necessary because the camera is zoomed out 3
             // Addition by Camera Pos is because I'm bad I think
-            Panel.SetPosition((MousePos - GameManager.CameraController.Position) / 2);
+            Panel.SetPosition(MousePos - GameManager.CameraController.Position);
 
-
-            // Is my game in fucking 1020x600 ??
+            // Stop Panel Moving Off Screen
             while (Panel.GetRect().End.x > 1920)
             {
                 Panel.SetPosition(Panel.RectPosition + new Vector2(-1, 0));

@@ -28,7 +28,7 @@ public class GameManager : Node
         if (Input.IsActionJustPressed("left_click"))
         {
             Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
-            Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos);
+            Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos * 2);
 
             if (GetUnitOnTile(ClickedTile) != null)
             {

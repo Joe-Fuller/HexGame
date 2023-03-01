@@ -52,7 +52,7 @@ public class Shop : Node
 
     public void EnterShopMode()
     {
-        GameManager.CameraController.SetTargetXPos(-1400);
+        GameManager.CameraController.SetTargetXPos(-1000);
         InShopMode = true;
         CanSelectUnitPack = true;
         Player.Money = 10;

@@ -13,8 +13,10 @@
 script = ExtResource( 2 )
 
 [node name="Map" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 0.5, 0.5 )
 
 [node name="CombatManager" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.5, 0.5 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 
@@ -24,7 +26,6 @@ visible = false
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 current = true
-zoom = Vector2( 2, 2 )
 smoothing_enabled = true
 script = ExtResource( 8 )
 
