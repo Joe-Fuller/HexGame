@@ -3,7 +3,6 @@ using System;
 
 public class Vinegar : Unit
 {
-    // UnitE Damages all of its Neighbouring Tiles
     public override void SetStats()
     {
         UnitName = "Vinegar";
