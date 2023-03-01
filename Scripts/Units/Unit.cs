@@ -141,7 +141,12 @@ public class Unit : Sprite
 
     public virtual void DealDamage(Unit Unit)
     {
-        Unit.CombatHealth -= Damage;
+        Unit.TakeDamage(Damage);
         Unit.UpdateText();
+    }
+
+    public virtual void TakeDamage(int IncDamage)
+    {
+        CombatHealth -= IncDamage;
     }
 }
