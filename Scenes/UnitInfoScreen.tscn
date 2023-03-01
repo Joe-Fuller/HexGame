@@ -23,21 +23,21 @@ script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
 margin_right = 320.0
-margin_bottom = 272.0
+margin_bottom = 200.0
 
 [node name="NameText" type="Label" parent="Panel"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 79.0
-margin_bottom = 66.0
+margin_right = 173.0
+margin_bottom = 53.0
 custom_fonts/font = SubResource( 2 )
 text = "Fire"
 
 [node name="HealthText" type="Label" parent="Panel"]
 margin_left = 16.0
 margin_top = 64.0
-margin_right = 58.0
-margin_bottom = 114.0
+margin_right = 173.0
+margin_bottom = 101.0
 custom_fonts/font = SubResource( 2 )
 text = "10 Health"
 
@@ -45,14 +45,14 @@ text = "10 Health"
 margin_left = 16.0
 margin_top = 112.0
 margin_right = 173.0
-margin_bottom = 162.0
+margin_bottom = 149.0
 custom_fonts/font = SubResource( 2 )
 text = "3 Damage"
 
 [node name="IconText" type="Label" parent="Panel"]
 margin_left = 192.0
 margin_top = 32.0
-margin_right = 285.0
+margin_right = 349.0
 margin_bottom = 158.0
 custom_fonts/font = SubResource( 3 )
 text = "X"
@@ -61,7 +61,7 @@ text = "X"
 margin_left = 16.0
 margin_top = 160.0
 margin_right = 304.0
-margin_bottom = 256.0
+margin_bottom = 191.0
 custom_fonts/font = SubResource( 4 )
-text = "Does Unique Effect As Detailed Here"
+text = "Unique Text"
 autowrap = true
