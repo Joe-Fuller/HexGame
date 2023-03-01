@@ -66,6 +66,17 @@ public class CombatManager : Node2D
             if (TurnQueue.Count > 0)
             {
                 TurnObject TurnObject = TurnQueue[0];
+                // Commented Block useful for debugging Turn Order
+                // GD.Print("Turn Order:");
+                // foreach (Unit Unit in TurnOrder)
+                // {
+                //     if (Unit != null)
+                //     {
+                //         GD.Print(Unit.UnitName + (Unit == TurnObject.Unit ? "   <-------" : ""));
+                //     }
+                //     else { GD.Print("Dead Unit"); }
+                // }
+                // GD.Print("----------------");
                 TurnQueue.RemoveAt(0);
                 TakeTurn(TurnObject);
                 await ToSignal(this, "TurnCompleted");
@@ -98,7 +109,8 @@ public class CombatManager : Node2D
                 {
                     TurnOrderPos = 0;
                     // Call SetTurnOrder() here to shuffle the Unit turn order (higher damage units will still go first, but equal damage units may have their order shuffled)
-                    SetTurnOrder();
+                    // SetTurnOrder();
+                    // it just made me confused, maybe it can come back with a turn order display
                 }
             }
 
