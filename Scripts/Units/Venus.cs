@@ -12,7 +12,7 @@ public class Venus : Unit
         Description = "Takes 1 less Damage from Attacks";
     }
 
-    public override void TakeDamage(int IncDamage)
+    public override void TakeDamage(int IncDamage, Unit AttackingUnit)
     {
         CombatHealth -= (IncDamage - 1);
     }

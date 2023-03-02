@@ -141,11 +141,11 @@ public class Unit : Sprite
 
     public virtual void DealDamage(Unit Unit)
     {
-        Unit.TakeDamage(Damage);
+        Unit.TakeDamage(Damage, this);
         Unit.UpdateText();
     }
 
-    public virtual void TakeDamage(int IncDamage)
+    public virtual void TakeDamage(int IncDamage, Unit AttackingUnit)
     {
         CombatHealth -= IncDamage;
     }
