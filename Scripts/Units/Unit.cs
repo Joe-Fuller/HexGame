@@ -35,9 +35,9 @@ public partial class Unit : Sprite2D
         Tilemap = GetNode<TileMap>("..");
 
         //Tilemap = GetNode<TileMap>("../TileMap");
-        IconText = GetNode<Label>("IconText");
-        HealthText = GetNode<Label>("HealthText");
-        DamageText = GetNode<Label>("DamageText");
+        IconText = GetNode<Label>("Control/IconText");
+        HealthText = GetNode<Label>("Control/HealthText");
+        DamageText = GetNode<Label>("Control/DamageText");
 
         IconText.Text = UnitIcon;
         HealthText.Text = Health.ToString();

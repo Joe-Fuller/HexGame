@@ -3,3 +3,4 @@ res://Scenes/GameManager.tscn
 res://TileMap.tres
 res://Scenes/Map.tscn
 res://Scenes/TileMap.tscn
+res://Scenes/Units/Unit.tscn

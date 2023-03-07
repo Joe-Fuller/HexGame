@@ -22,7 +22,7 @@ public partial class TileMap : Godot.TileMap
         NewUnit.PlayerOwned = PlayerOwned;
         if (!PlayerOwned)
         {
-            NewUnit.Texture = (Texture2D)GD.Load("res://HeXagons/RedHeXagon.png");
+            NewUnit.Texture = (Texture2D)GD.Load("res://Hexagons/RedHexagon.png");
         }
         NewUnit.CurrentCell = Location;
         AddChild(NewUnit);
@@ -36,7 +36,7 @@ public partial class TileMap : Godot.TileMap
 
         NewUnit.PlayerOwned = false;
         // shop units are currentlY coloured greY, make sure to change this
-        NewUnit.Texture = (Texture2D)GD.Load("res://HeXagons/GreYHeXagon.png");
+        NewUnit.Texture = (Texture2D)GD.Load("res://Hexagons/GreyHexagon.png");
         NewUnit.CurrentCell = Location;
         AddChild(NewUnit);
         NewUnit.Initialise(Location);
@@ -316,7 +316,7 @@ public partial class TileMap : Godot.TileMap
         ClonedUnit.PlayerOwned = Unit.PlayerOwned;
         if (!ClonedUnit.PlayerOwned)
         {
-            ClonedUnit.Texture = (Texture2D)GD.Load("res://HeXagons/RedHeXagon.png");
+            ClonedUnit.Texture = (Texture2D)GD.Load("res://Hexagons/RedHexagon.png");
         }
         ClonedUnit.Health = Unit.Health;
         ClonedUnit.Damage = Unit.Damage;
