@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Player : Node
+public partial class Player : Node
 {
     public Godot.Collections.Array<Unit> Units;
     public int Money = 10;

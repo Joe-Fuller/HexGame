@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Venus : Unit
+public partial class Venus : Unit
 {
     public override void SetStats()
     {

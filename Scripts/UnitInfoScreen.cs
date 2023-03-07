@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class UnitInfoScreen : CanvasLayer
+public partial class UnitInfoScreen : CanvasLayer
 {
     Panel Panel;
     Label NameText;
@@ -25,14 +25,14 @@ public class UnitInfoScreen : CanvasLayer
         GameManager = GetNode<GameManager>("..");
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         base._Process(delta);
         if (Visible)
         {
             // update position and info
             Vector2 MousePos = GameManager.Tilemap.GetGlobalMousePosition();
-            Vector2 TileMousedOver = GameManager.Tilemap.WorldToMap(MousePos * 2);
+            Vector2 TileMousedOver = GameManager.Tilemap.LocalToMap(MousePos * 2);
             Unit MousedOverUnit = GameManager.GetUnitOnTile(TileMousedOver);
 
             if (MousedOverUnit != null)
@@ -40,17 +40,17 @@ public class UnitInfoScreen : CanvasLayer
                 SetText(MousedOverUnit);
             }
 
-            // Addition by Camera Pos is because I'm bad I think
+            // Addition by Camera3D Pos is because I'm bad I think
             Panel.SetPosition(MousePos - GameManager.CameraController.Position);
 
             // Stop Panel Moving Off Screen
-            while (Panel.GetRect().End.x > 1920)
+            while (Panel.GetRect().End.X > 1920)
             {
-                Panel.SetPosition(Panel.RectPosition + new Vector2(-1, 0));
+                Panel.SetPosition(Panel.Position + new Vector2(-1, 0));
             }
-            while (Panel.GetRect().End.y > 1080)
+            while (Panel.GetRect().End.Y > 1080)
             {
-                Panel.SetPosition(Panel.RectPosition + new Vector2(0, -1));
+                Panel.SetPosition(Panel.Position + new Vector2(0, -1));
             }
         }
     }
@@ -64,8 +64,8 @@ public class UnitInfoScreen : CanvasLayer
         DescriptionText.Text = Unit.Description;
 
         // Set Size based on DescriptionText size
-        int Length = (int)DescriptionText.GetRect().End.y;
+        int Length = (int)DescriptionText.GetRect().End.Y;
 
-        Panel.RectSize = new Vector2(320, Length + 16);
+        Panel.Size = new Vector2(320, Length + 16);
     }
 }

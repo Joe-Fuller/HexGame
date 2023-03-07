@@ -1,13 +1,13 @@
 using Godot;
 using System;
 
-public class Shop : Node
+public partial class Shop : Node
 {
     private Player Player;
     private TileMap Tilemap;
     private GameManager GameManager;
     public Godot.Collections.Array<Unit> ShopUnits;
-    private Godot.Collections.Array<Vector2> ShopTiles;
+    private Godot.Collections.Array<Vector2I> ShopTiles;
     public Godot.Collections.Array<UnitPack> UnitPacks;
     public bool InShopMode = false;
     public bool CanSelectUnitPack = false;
@@ -27,12 +27,12 @@ public class Shop : Node
         // BuyUnit(Tilemap.GetUnitOnTile(new Vector2(1, 1)), new Vector2(5, 3));
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         // if (Input.IsActionJustPressed("left_click") && InShopMode)
         // {
         //     Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
-        //     Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos);
+        //     Vector2 ClickedTile = Tilemap.LocalToMap(Mousepos);
 
         //     if (ShopTiles.Contains(ClickedTile))
         //     {
@@ -79,7 +79,7 @@ public class Shop : Node
     {
         int NumberOfUnits = Tilemap.UnitScenes.Count;
 
-        foreach (Vector2 ShopTile in ShopTiles)
+        foreach (Vector2I ShopTile in ShopTiles)
         {
             int Index = Math.Abs((int)GD.Randi() % NumberOfUnits);
 
@@ -89,7 +89,7 @@ public class Shop : Node
         ShopUnits = Tilemap.ShopUnits;
     }
 
-    public void BuyUnit(Unit Unit, Vector2 TileToPlaceUnitOn)
+    public void BuyUnit(Unit Unit, Vector2I TileToPlaceUnitOn)
     {
         if (Player.Money >= 3)
         {
@@ -97,7 +97,7 @@ public class Shop : Node
             // TODO more about money
             Unit.PlayerOwned = true;
             Unit.Move(TileToPlaceUnitOn);
-            Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
+            Unit.Texture = (Texture2D)GD.Load("res://Hexagons/BlueHexagon.png");
             Tilemap.Units.Add(Unit);
             Tilemap.ShopUnits.Remove(Unit);
             GD.Print("Bought Unit: ", Unit.Name, " Remaining Money: ", Player.Money);
@@ -109,16 +109,16 @@ public class Shop : Node
     }
 
 
-    private Godot.Collections.Array<Vector2> GetShopTiles()
+    private Godot.Collections.Array<Vector2I> GetShopTiles()
     {
-        Godot.Collections.Array<Vector2> ShopTiles = new Godot.Collections.Array<Vector2>();
+        Godot.Collections.Array<Vector2I> ShopTiles = new Godot.Collections.Array<Vector2I>();
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 6; j++)
             {
-                if (Tilemap.GetCell(i, j) != -1)
+                if (Tilemap.GetCellSourceId(0, new Vector2I(i, j)) != -1)
                 {
-                    ShopTiles.Add(new Vector2(i, j));
+                    ShopTiles.Add(new Vector2I(i, j));
                 }
             }
         }
@@ -142,29 +142,29 @@ public class Shop : Node
     {
         // Unit Pack 1
         UnitPack UnitPack1 = GetNode<UnitPack>("./UnitPack1");
-        UnitPack1.SetTiles(new Godot.Collections.Array<Vector2>(
-            new Vector2(-1, 0),
-            new Vector2(-1, 1),
-            new Vector2(-2, 1)
-        ));
+        Godot.Collections.Array<Vector2I> Pack1Tiles = new Godot.Collections.Array<Vector2I>();
+        Pack1Tiles.Add(new Vector2I(-1, 0));
+        Pack1Tiles.Add(new Vector2I(-1, 1));
+        Pack1Tiles.Add(new Vector2I(-2, 1));
+        UnitPack1.SetTiles(Pack1Tiles);
         UnitPacks.Add(UnitPack1);
 
         // Unit Pack 2
         UnitPack UnitPack2 = GetNode<UnitPack>("./UnitPack2");
-        UnitPack2.SetTiles(new Godot.Collections.Array<Vector2>(
-            new Vector2(-2, 3),
-            new Vector2(-3, 2),
-            new Vector2(-3, 3)
-        ));
+        Godot.Collections.Array<Vector2I> Pack2Tiles = new Godot.Collections.Array<Vector2I>();
+        Pack2Tiles.Add(new Vector2I(-2, 3));
+        Pack2Tiles.Add(new Vector2I(-3, 2));
+        Pack2Tiles.Add(new Vector2I(-3, 3));
+        UnitPack2.SetTiles(Pack2Tiles);
         UnitPacks.Add(UnitPack2);
 
         // Unit Pack 3        
         UnitPack UnitPack3 = GetNode<UnitPack>("./UnitPack3");
-        UnitPack3.SetTiles(new Godot.Collections.Array<Vector2>(
-            new Vector2(-1, 4),
-            new Vector2(-1, 5),
-            new Vector2(-2, 5)
-        ));
+        Godot.Collections.Array<Vector2I> Pack3Tiles = new Godot.Collections.Array<Vector2I>();
+        Pack3Tiles.Add(new Vector2I(-1, 4));
+        Pack3Tiles.Add(new Vector2I(-1, 5));
+        Pack3Tiles.Add(new Vector2I(-2, 5));
+        UnitPack3.SetTiles(Pack3Tiles);
         UnitPacks.Add(UnitPack3);
     }
 
@@ -176,7 +176,7 @@ public class Shop : Node
         {
             // reset the unit array first
             UnitPack.Units = new Godot.Collections.Array<Unit>();
-            foreach (Vector2 Tile in UnitPack.Tiles)
+            foreach (Vector2I Tile in UnitPack.Tiles)
             {
                 int Index = Math.Abs((int)GD.Randi() % NumberOfUnits);
 
@@ -201,7 +201,7 @@ public class Shop : Node
                     Unit.PlayerOwned = true;
                     // Move Unit to Bench automatically?
                     // Unit.Move(TileToPlaceUnitOn);
-                    Unit.Texture = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
+                    Unit.Texture = (Texture2D)GD.Load("res://Hexagons/BlueHexagon.png");
                     Tilemap.Units.Add(Unit);
                     Tilemap.ShopUnits.Remove(Unit);
                     ShopUnits.Remove(Unit);

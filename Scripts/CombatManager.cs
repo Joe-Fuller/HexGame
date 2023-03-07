@@ -1,19 +1,19 @@
 using Godot;
 using System;
 
-public class CombatManager : Node2D
+public partial class CombatManager : Node2D
 {
-    [Signal] private delegate void TurnCompleted();
-    [Signal] private delegate void Unpaused();
+    [Signal] public delegate void TurnCompletedEventHandler();
+    [Signal] public delegate void UnpausedEventHandler();
 
     public Godot.Collections.Array<Unit> Units;
     public TileMap Tilemap;
     public GameManager GameManager;
     public bool InCombat;
     public bool IsPaused = false;
-    private Texture BlueHex;
-    private Texture RedHex;
-    private Godot.Collections.Array<Vector2> EnemySpawnTiles;
+    private Texture2D BlueHex;
+    private Texture2D RedHex;
+    private Godot.Collections.Array<Vector2I> EnemySpawnTiles;
 
 
 
@@ -30,13 +30,13 @@ public class CombatManager : Node2D
     {
         Tilemap = GetNode<TileMap>("../Map/TileMap");
         GameManager = GetNode<GameManager>("..");
-        BlueHex = (Texture)GD.Load("res://Hexagons/BlueHexagon.png");
-        RedHex = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
+        BlueHex = (Texture2D)GD.Load("res://Hexagons/BlueHexagon.png");
+        RedHex = (Texture2D)GD.Load("res://Hexagons/RedHexagon.png");
         Units = new Godot.Collections.Array<Unit>();
         TurnQueue = new Godot.Collections.Array<TurnObject>();
         TurnOrder = new Godot.Collections.Array<Unit>();
         RoundOverScreen = GetNode<RoundOverScreen>("../RoundOverScreen");
-        EnemySpawnTiles = new Godot.Collections.Array<Vector2>();
+        EnemySpawnTiles = new Godot.Collections.Array<Vector2I>();
         SetEnemySpawnTiles();
     }
 
@@ -101,7 +101,10 @@ public class CombatManager : Node2D
                 }
                 else
                 {
-                    TurnObject = new TurnObject("Move", Unit, new Godot.Collections.Array<Vector2>(Unit.GetNextMove()));
+                    Vector2I NextMove = TurnObject.Unit.GetNextMove();
+                    Godot.Collections.Array<Vector2I> NextMoveArray = new Godot.Collections.Array<Vector2I>();
+                    NextMoveArray.Add(NextMove);
+                    TurnObject = new TurnObject("Move", Unit, NextMoveArray);
                 }
                 TurnQueue.Add(TurnObject);
                 TurnOrderPos++;
@@ -124,7 +127,7 @@ public class CombatManager : Node2D
         Units = new Godot.Collections.Array<Unit>();
         foreach (Unit IncUnit in IncUnits)
         {
-            if (IncUnit.CurrentCell.x > 3)
+            if (IncUnit.CurrentCell.X > 3)
             {
                 Units.Add(Tilemap.CloneUnit(IncUnit));
                 IncUnit.Visible = false;
@@ -240,14 +243,18 @@ public class CombatManager : Node2D
             }
             else if (TurnObject.Unit.CanMove())
             {
-                TurnObject NextTurnObject = new TurnObject("Move", TurnObject.Unit, new Godot.Collections.Array<Vector2>(TurnObject.Unit.GetNextMove()));
+                // had to separately make the array and add the move after updating to godot 4
+                Vector2I NextMove = TurnObject.Unit.GetNextMove();
+                Godot.Collections.Array<Vector2I> NextMoveArray = new Godot.Collections.Array<Vector2I>();
+                NextMoveArray.Add(NextMove);
+                TurnObject NextTurnObject = new TurnObject("Move", TurnObject.Unit, NextMoveArray);
                 TurnQueue.Add(NextTurnObject);
             }
 
         }
         if (TurnObject.Type == "Attack")
         {
-            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            foreach (Vector2I Tile in TurnObject.TargetTiles)
             {
                 ColorCell(Tile, TurnObject.Unit.PlayerOwned ? 3 : 4);
             }
@@ -277,7 +284,7 @@ public class CombatManager : Node2D
             {
                 await ToSignal(this, "Unpaused");
             }
-            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            foreach (Vector2I Tile in TurnObject.TargetTiles)
             {
                 ColorCell(Tile, 0);
             }
@@ -289,7 +296,7 @@ public class CombatManager : Node2D
         }
         if (TurnObject.Type == "Buff")
         {
-            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            foreach (Vector2I Tile in TurnObject.TargetTiles)
             {
                 ColorCell(Tile, TurnObject.Unit.PlayerOwned ? 3 : 4);
             }
@@ -316,7 +323,7 @@ public class CombatManager : Node2D
             {
                 await ToSignal(this, "Unpaused");
             }
-            foreach (Vector2 Tile in TurnObject.TargetTiles)
+            foreach (Vector2I Tile in TurnObject.TargetTiles)
             {
                 ColorCell(Tile, 0);
             }
@@ -329,11 +336,11 @@ public class CombatManager : Node2D
         // ColorCell(TurnObject.Unit.CurrentCell, 0);
         EmitSignal("TurnCompleted");
     }
-    private void ColorCell(Vector2 Cell, int Colour)
+    private void ColorCell(Vector2I Cell, int Colour)
     {
-        if (Tilemap.GetCellv(Cell) != -1)
+        if (Tilemap.GetCellSourceId(0, Cell) != -1)
         {
-            Tilemap.SetCell((int)Cell.x, (int)Cell.y, Colour);
+            Tilemap.SetCell(0, Cell, Colour);
         }
     }
 
@@ -406,7 +413,7 @@ public class CombatManager : Node2D
     {
         EnemySpawnTiles.Shuffle();
         int TileIndex = 0;
-        Vector2 Tile = EnemySpawnTiles[0];
+        Vector2I Tile = EnemySpawnTiles[0];
         while (GameManager.GetUnitOnTile(Tile) != null)
         {
             TileIndex++;
@@ -417,7 +424,8 @@ public class CombatManager : Node2D
             Tile = EnemySpawnTiles[TileIndex];
         }
 
-        int Index = (int)GD.RandRange(0, Tilemap.UnitScenes.Count - 1);
+        //  POSSIBLE FIX NEEDED
+        int Index = (int)GD.Randi() % (Tilemap.UnitScenes.Count - 1);
         Tilemap.SpawnUnit(Tile, false, Index);
     }
 
@@ -427,9 +435,9 @@ public class CombatManager : Node2D
         {
             for (int j = 0; j < 8; j++)
             {
-                if (Tilemap.GetCell(i, j) != -1)
+                if (Tilemap.GetCellSourceId(0, new Vector2I(i, j)) != -1)
                 {
-                    EnemySpawnTiles.Add(new Vector2(i, j));
+                    EnemySpawnTiles.Add(new Vector2I(i, j));
                 }
             }
         }

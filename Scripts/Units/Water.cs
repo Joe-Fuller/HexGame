@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Water : Unit
+public partial class Water : Unit
 {
     // UnitE Damages all of its Neighbouring Tiles
     public override void SetStats()
@@ -13,9 +13,9 @@ public class Water : Unit
         Description = "Damages ALL Adjacent Tiles";
     }
 
-    public override Godot.Collections.Array<Vector2> GetAffectedTiles()
+    public override Godot.Collections.Array<Vector2I> GetAffectedTiles()
     {
-        Godot.Collections.Array<Vector2> DamagedTiles = GetNeighbours();
+        Godot.Collections.Array<Vector2I> DamagedTiles = GetNeighbours();
         return DamagedTiles;
     }
 }

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Unit : Sprite
+public partial class Unit : Sprite2D
 {
     public string UnitName;
     public string UnitIcon;
@@ -15,8 +15,8 @@ public class Unit : Sprite
     public int CombatHealth;
 
     public int MovesThisTurn = 0;
-    public Vector2 CurrentCell;
-    public Vector2 TargetCell;
+    public Vector2I CurrentCell;
+    public Vector2I TargetCell;
     public Unit TargetUnit;
     public bool PlayerOwned;
 
@@ -72,47 +72,47 @@ public class Unit : Sprite
         }
     }
 
-    public void Move(Vector2 CellCoords)
+    public void Move(Vector2I CellCoords)
     {
         if (Tilemap == null)
         {
             Tilemap = GetNode<TileMap>("..");
         }
         CurrentCell = CellCoords;
-        this.Position = Tilemap.MapToWorld(CurrentCell);
+        this.Position = Tilemap.MapToLocal(CurrentCell);
     }
 
     public void MoveTowardTarget()
     {
-        Godot.Collections.Array<Vector2> Path = Tilemap.AStar(CurrentCell, TargetCell);
-        Vector2 NextCell = Path[Path.Count - 2];
+        Godot.Collections.Array<Vector2I> Path3D = Tilemap.AStar3D(CurrentCell, TargetCell);
+        Vector2I NextCell = (Vector2I)Path3D[Path3D.Count - 2];
         Move(NextCell);
     }
 
-    public Vector2 GetNextMove()
+    public Vector2I GetNextMove()
     {
-        Godot.Collections.Array<Vector2> Path = Tilemap.AStar(CurrentCell, TargetCell);
-        Vector2 NextCell = Path[Path.Count - 2];
+        Godot.Collections.Array<Vector2I> Path3D = Tilemap.AStar3D(CurrentCell, TargetCell);
+        Vector2I NextCell = (Vector2I)Path3D[Path3D.Count - 2];
         return NextCell;
     }
 
-    public virtual Godot.Collections.Array<Vector2> GetAffectedTiles()
+    public virtual Godot.Collections.Array<Vector2I> GetAffectedTiles()
     {
-        Godot.Collections.Array<Vector2> DamagedTiles = new Godot.Collections.Array<Vector2>();
+        Godot.Collections.Array<Vector2I> DamagedTiles = new Godot.Collections.Array<Vector2I>();
 
         DamagedTiles.Add(TargetCell);
 
         return DamagedTiles;
     }
 
-    public void Initialise(Vector2 CellCoords)
+    public void Initialise(Vector2I CellCoords)
     {
         Move(CellCoords);
     }
 
     public bool CurrentCellIsHighlighted()
     {
-        return Tilemap.GetCell((int)CurrentCell.x, (int)CurrentCell.y) == (PlayerOwned ? 3 : 4);
+        return Tilemap.GetCellSourceId(0, CurrentCell) == (PlayerOwned ? 3 : 4);
     }
 
     public bool CanAttack()
@@ -131,7 +131,7 @@ public class Unit : Sprite
         DamageText.Text = Damage.ToString();
     }
 
-    public Godot.Collections.Array<Vector2> GetNeighbours()
+    public Godot.Collections.Array<Vector2I> GetNeighbours()
     {
         return Tilemap.GetNeighbours(CurrentCell, true);
     }

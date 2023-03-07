@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Aqua_Vitae : Unit
+public partial class Aqua_Vitae : Unit
 {
     public override void SetStats()
     {

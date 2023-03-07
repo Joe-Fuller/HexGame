@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Fire : Unit
+public partial class Fire : Unit
 {
     public override void SetStats()
     {

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class CombatUI : Control
+public partial class CombatUI : Control
 {
     public CombatManager CombatManager;
     private GameManager GameManager;

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class GameManager : Node
+public partial class GameManager : Node
 {
     public TileMap Tilemap;
     public CombatManager CombatManager;
@@ -23,12 +23,12 @@ public class GameManager : Node
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         if (Input.IsActionJustPressed("left_click"))
         {
             Vector2 Mousepos = Tilemap.GetGlobalMousePosition();
-            Vector2 ClickedTile = Tilemap.WorldToMap(Mousepos * 2);
+            Vector2I ClickedTile = Tilemap.LocalToMap(Mousepos * 2);
 
             if (GetUnitOnTile(ClickedTile) != null)
             {
@@ -46,20 +46,20 @@ public class GameManager : Node
                 // }
 
                 // SELECT UNIT PACK
-                if (SelectedUnit != null && SelectedUnit.CurrentCell.x < 1 && Shop.CanSelectUnitPack)
+                if (SelectedUnit != null && SelectedUnit.CurrentCell.X < 1 && Shop.CanSelectUnitPack)
                 {
                     Shop.BuyUnitPackFromUnit(SelectedUnit);
                     DeselectUnit();
                 }
 
                 // MOVE OWNED UNIT
-                if (SelectedUnit != null && ClickedTile.x > 0 && ClickedTile.x < 7 && SelectedUnit.PlayerOwned)
+                if (SelectedUnit != null && ClickedTile.X > 0 && ClickedTile.Y < 7 && SelectedUnit.PlayerOwned)
                 {
-                    Vector2 PrevTile = SelectedUnit.CurrentCell;
+                    Vector2I PrevTile = SelectedUnit.CurrentCell;
                     SelectedUnit.Move(ClickedTile);
                     if (SelectedUnit.CurrentCell != PrevTile)
                     {
-                        Tilemap.SetCellv(PrevTile, 0);
+                        Tilemap.SetCell(0, PrevTile, 0);
                         SelectedUnit = null;
                     }
                 }
@@ -116,18 +116,18 @@ public class GameManager : Node
         // Decolours current selected tile, sets SelectedUnit, colours new selected tile
         if (SelectedUnit != null)
         {
-            Tilemap.SetCellv(SelectedUnit.CurrentCell, 0);
+            Tilemap.SetCell(0, SelectedUnit.CurrentCell, 0);
         }
         SelectedUnit = Unit;
         // UnitInfoScreen.SetText(SelectedUnit); idk why this line was here
-        Tilemap.SetCellv(Unit.CurrentCell, 2);
+        Tilemap.SetCell(0, Unit.CurrentCell, 2);
     }
 
     private void DeselectUnit()
     {
         if (SelectedUnit != null)
         {
-            Tilemap.SetCellv(SelectedUnit.CurrentCell, 0);
+            Tilemap.SetCell(0, SelectedUnit.CurrentCell, 0);
         }
         SelectedUnit = null;
     }

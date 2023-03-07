@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Earth : Unit
+public partial class Earth : Unit
 {
     public override void SetStats()
     {

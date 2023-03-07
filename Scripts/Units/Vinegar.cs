@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Vinegar : Unit
+public partial class Vinegar : Unit
 {
     public override void SetStats()
     {

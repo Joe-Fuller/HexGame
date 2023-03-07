@@ -1,35 +1,33 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=9 format=3 uid="uid://ds43ly78mc67r"]
 
-[ext_resource path="res://Scenes/CombatManager.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scripts/GameManager.cs" type="Script" id=2]
-[ext_resource path="res://Scenes/Map.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/RoundOverScreen.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Shop.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Scenes/UnitInfoScreen.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scripts/CameraController.cs" type="Script" id=8]
+[ext_resource type="PackedScene" path="res://Scenes/CombatManager.tscn" id="1"]
+[ext_resource type="Script" path="res://Scripts/GameManager.cs" id="2"]
+[ext_resource type="PackedScene" uid="uid://jgdlv4h20kmh" path="res://Scenes/Map.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://Scenes/RoundOverScreen.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://Scenes/Shop.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://Scenes/UnitInfoScreen.tscn" id="7"]
+[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="8"]
 
 [node name="GameManager" type="Node"]
-script = ExtResource( 2 )
+script = ExtResource("2")
 
-[node name="Map" parent="." instance=ExtResource( 3 )]
-scale = Vector2( 0.5, 0.5 )
+[node name="Map" parent="." instance=ExtResource("3")]
+scale = Vector2(0.5, 0.5)
 
-[node name="CombatManager" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 0.5, 0.5 )
+[node name="CombatManager" parent="." instance=ExtResource("1")]
+scale = Vector2(0.5, 0.5)
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
+[node name="Player" parent="." instance=ExtResource("4")]
 
-[node name="RoundOverScreen" parent="." instance=ExtResource( 5 )]
+[node name="RoundOverScreen" parent="." instance=ExtResource("5")]
 visible = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
-current = true
-smoothing_enabled = true
-script = ExtResource( 8 )
+script = ExtResource("8")
 
-[node name="Shop" parent="." instance=ExtResource( 6 )]
+[node name="Shop" parent="." instance=ExtResource("6")]
 
-[node name="UnitInfoScreen" parent="." instance=ExtResource( 7 )]
+[node name="UnitInfoScreen" parent="." instance=ExtResource("7")]
 visible = false

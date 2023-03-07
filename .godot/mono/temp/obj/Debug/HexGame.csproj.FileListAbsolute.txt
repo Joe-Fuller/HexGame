@@ -1,0 +1,12 @@
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.csproj.AssemblyReference.cache
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.GeneratedMSBuildEditorConfig.editorconfig
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.AssemblyInfoInputs.cache
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.AssemblyInfo.cs
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.csproj.CoreCompileInputs.cache
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/bin/Debug/HexGame.deps.json
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/bin/Debug/HexGame.dll
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/bin/Debug/HexGame.pdb
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.dll
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/refint/HexGame.dll
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/HexGame.pdb
+/home/joe/Coding/GodotProjects/HexGame/.godot/mono/temp/obj/Debug/ref/HexGame.dll

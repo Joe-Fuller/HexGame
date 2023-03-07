@@ -1,6 +1,6 @@
 using Godot;
 
-public class RoundOverScreen : CanvasLayer
+public partial class RoundOverScreen : CanvasLayer
 {
     Label Title;
     Button Button;
@@ -14,7 +14,7 @@ public class RoundOverScreen : CanvasLayer
 
     private void OnResetButtonPressed()
     {
-        // GetTree().ChangeScene("res://Scenes/GameManager.tscn");
+        // GetTree().ChangeSceneToFile("res://Scenes/GameManager.tscn");
         GameManager.Shop.EnterShopMode();
         this.Visible = false;
     }

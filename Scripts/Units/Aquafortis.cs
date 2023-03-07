@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Aquafortis : Unit
+public partial class Aquafortis : Unit
 {
     // UnitF Damages Tiles in a Cone in front of itself
     public override void SetStats()
@@ -13,15 +13,15 @@ public class Aquafortis : Unit
         Description = "Also Damages Tiles Either Side of Target";
     }
 
-    public override Godot.Collections.Array<Vector2> GetAffectedTiles()
+    public override Godot.Collections.Array<Vector2I> GetAffectedTiles()
     {
-        Godot.Collections.Array<Vector2> DamagedTiles = new Godot.Collections.Array<Vector2>();
+        Godot.Collections.Array<Vector2I> DamagedTiles = new Godot.Collections.Array<Vector2I>();
 
         // we can find the affected tiles (for now) by the overlap of the Unit's Neighbours and the TargetUnit's Neighbours
 
-        Godot.Collections.Array<Vector2> TargetUnitsNeighbours = TargetUnit.GetNeighbours();
+        Godot.Collections.Array<Vector2I> TargetUnitsNeighbours = TargetUnit.GetNeighbours();
 
-        foreach (Vector2 Tile in GetNeighbours())
+        foreach (Vector2I Tile in GetNeighbours())
         {
             if (Tilemap.Distance(Tile, TargetCell) <= 1)
             {

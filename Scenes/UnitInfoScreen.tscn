@@ -1,19 +1,19 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Fonts/Symbola.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Fonts/Symbola.ttf" type="FontFile" id=1]
 [ext_resource path="res://Scripts/UnitInfoScreen.cs" type="Script" id=2]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="FontFile" id=2]
 size = 36
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="FontFile" id=3]
 size = 125
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="FontFile" id=4]
 size = 30
 use_filter = true
 font_data = ExtResource( 1 )
@@ -22,46 +22,46 @@ font_data = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
-margin_right = 320.0
-margin_bottom = 200.0
+offset_right = 320.0
+offset_bottom = 200.0
 
 [node name="NameText" type="Label" parent="Panel"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 173.0
-margin_bottom = 53.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 173.0
+offset_bottom = 53.0
 custom_fonts/font = SubResource( 2 )
 text = "Fire"
 
 [node name="HealthText" type="Label" parent="Panel"]
-margin_left = 16.0
-margin_top = 64.0
-margin_right = 173.0
-margin_bottom = 101.0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 173.0
+offset_bottom = 101.0
 custom_fonts/font = SubResource( 2 )
 text = "10 Health"
 
 [node name="DamageText" type="Label" parent="Panel"]
-margin_left = 16.0
-margin_top = 112.0
-margin_right = 173.0
-margin_bottom = 149.0
+offset_left = 16.0
+offset_top = 112.0
+offset_right = 173.0
+offset_bottom = 149.0
 custom_fonts/font = SubResource( 2 )
 text = "3 Damage"
 
 [node name="IconText" type="Label" parent="Panel"]
-margin_left = 192.0
-margin_top = 32.0
-margin_right = 349.0
-margin_bottom = 158.0
+offset_left = 192.0
+offset_top = 32.0
+offset_right = 349.0
+offset_bottom = 158.0
 custom_fonts/font = SubResource( 3 )
 text = "X"
 
 [node name="DescriptionText" type="Label" parent="Panel"]
-margin_left = 16.0
-margin_top = 160.0
-margin_right = 304.0
-margin_bottom = 191.0
+offset_left = 16.0
+offset_top = 160.0
+offset_right = 304.0
+offset_bottom = 191.0
 custom_fonts/font = SubResource( 4 )
 text = "Unique Text"
 autowrap = true

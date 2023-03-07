@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Mercury : Unit
+public partial class Mercury : Unit
 {
     // UnitE Damages all of its Neighbouring Tiles
     public override void SetStats()

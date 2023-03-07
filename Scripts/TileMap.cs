@@ -1,27 +1,28 @@
 using Godot;
 using System;
 
-public class TileMap : Godot.TileMap
+public partial class TileMap : Godot.TileMap
 {
     public Godot.Collections.Array<PackedScene> UnitScenes;
     public Godot.Collections.Array<Unit> Units;
     public Godot.Collections.Array<Unit> CombatUnits;
     public Godot.Collections.Array<Unit> ShopUnits;
-    public Godot.Collections.Array<Vector2> Tiles;
+    public Godot.Collections.Array<Vector2I> Tiles;
 
-    public Vector2 StartPos = new Vector2(-100, -100);
-    public Vector2 EndPos;
+    public Vector2I StartPos = new Vector2I(-100, -100);
+    public Vector2I EndPos;
 
-    public Vector2 SelectedCell = new Vector2(-100, -100);
+    public Vector2I SelectedCell = new Vector2I(-100, -100);
 
-    public void SpawnUnit(Vector2 Location, bool PlayerOwned, int Index)
+    public void SpawnUnit(Vector2I Location, bool PlayerOwned, int IndeX)
     {
-        Unit NewUnit = (Unit)UnitScenes[Index].Instance();
+        // this was Instance() it might POSSIBLE FIX NEEDED
+        Unit NewUnit = (Unit)UnitScenes[IndeX].Instantiate();
 
         NewUnit.PlayerOwned = PlayerOwned;
         if (!PlayerOwned)
         {
-            NewUnit.Texture = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
+            NewUnit.Texture = (Texture2D)GD.Load("res://HeXagons/RedHeXagon.png");
         }
         NewUnit.CurrentCell = Location;
         AddChild(NewUnit);
@@ -29,13 +30,13 @@ public class TileMap : Godot.TileMap
         Units.Add(NewUnit);
     }
 
-    public void SpawnShopUnit(Vector2 Location, int Index)
+    public void SpawnShopUnit(Vector2I Location, int IndeX)
     {
-        Unit NewUnit = (Unit)UnitScenes[Index].Instance();
+        Unit NewUnit = (Unit)UnitScenes[IndeX].Instantiate();
 
         NewUnit.PlayerOwned = false;
-        // shop units are currently coloured grey, make sure to change this
-        NewUnit.Texture = (Texture)GD.Load("res://Hexagons/GreyHexagon.png");
+        // shop units are currentlY coloured greY, make sure to change this
+        NewUnit.Texture = (Texture2D)GD.Load("res://HeXagons/GreYHeXagon.png");
         NewUnit.CurrentCell = Location;
         AddChild(NewUnit);
         NewUnit.Initialise(Location);
@@ -49,85 +50,85 @@ public class TileMap : Godot.TileMap
         Units = new Godot.Collections.Array<Unit>();
         CombatUnits = new Godot.Collections.Array<Unit>();
         ShopUnits = new Godot.Collections.Array<Unit>();
-        Tiles = new Godot.Collections.Array<Vector2>();
+        Tiles = new Godot.Collections.Array<Vector2I>();
         SetTiles();
 
         CollectUnitScenes();
     }
 
-    public void FindCell(Vector2 Mousepos)
+    public void FindCell(Vector2I Mousepos)
     {
-        var Cell = WorldToMap(Mousepos);
-        var CellType = GetCell((int)Cell.x, (int)Cell.y);
-        bool isValid = CellType != -1;
+        var Cell = LocalToMap(Mousepos);
+        var CellTYpe = GetCellSourceId(0, Cell);
+        bool isValid = CellTYpe != -1;
         if (isValid)
         {
-            if (StartPos.x == -100)
+            if (StartPos.X == -100)
             {
                 StartPos = Cell;
-                SetCell((int)StartPos.x, (int)StartPos.y, 1);
+                SetCell(0, StartPos, 1);
             }
             else
             {
-                SetCell((int)EndPos.x, (int)EndPos.y, 0);
+                SetCell(0, EndPos, 0);
                 EndPos = Cell;
-                SetCell((int)EndPos.x, (int)EndPos.y, 1);
+                SetCell(0, EndPos, 1);
             }
         }
         GD.Print(StartPos, EndPos);
     }
 
-    public Godot.Collections.Array<Vector2> GetNeighbours(Vector2 Cell, bool GetAllNeighbours = false)
+    public Godot.Collections.Array<Vector2I> GetNeighbours(Vector2I Cell, bool GetAllNeighbours = false)
     {
-        var Neighbours = new Godot.Collections.Array<Vector2>();
+        var Neighbours = new Godot.Collections.Array<Vector2I>();
 
-        int x = (int)Cell.x;
-        int y = (int)Cell.y;
+        int X = (int)Cell.X;
+        int Y = (int)Cell.Y;
 
-        if (GetCell(x, y - 1) != -1)
+        if (GetCellSourceId(0, new Vector2I(X, Y - 1)) != -1)
         {
-            Neighbours.Add(new Vector2(x, y - 1));
+            Neighbours.Add(new Vector2I(X, Y - 1));
         }
-        if (GetCell(x, y + 1) != -1)
+        if (GetCellSourceId(0, new Vector2I(X, Y + 1)) != -1)
         {
-            Neighbours.Add(new Vector2(x, y + 1));
+            Neighbours.Add(new Vector2I(X, Y + 1));
         }
-        if (x % 2 == 0)
+        if (X % 2 == 0)
         {
-            if (GetCell(x + 1, y - 1) != -1)
+            if (GetCellSourceId(0, new Vector2I(X + 1, Y - 1)) != -1)
             {
-                Neighbours.Add(new Vector2(x + 1, y - 1));
+                Neighbours.Add(new Vector2I(X + 1, Y - 1));
             }
-            if (GetCell(x + 1, y) != -1)
+            if (GetCellSourceId(0, new Vector2I(X + 1, Y)) != -1)
             {
-                Neighbours.Add(new Vector2(x + 1, y));
+                Neighbours.Add(new Vector2I(X + 1, Y));
             }
-            if (GetCell(x - 1, y - 1) != -1)
+            if (GetCellSourceId(0, new Vector2I(X - 1, Y - 1)) != -1)
             {
-                Neighbours.Add(new Vector2(x - 1, y - 1));
+                Neighbours.Add(new Vector2I(X - 1, Y - 1));
             }
-            if (GetCell(x - 1, y) != -1)
+            if (GetCellSourceId(0, new Vector2I(X - 1, Y)) != -1)
             {
-                Neighbours.Add(new Vector2(x - 1, y));
+                Neighbours.Add(new Vector2I(X - 1, Y));
             }
         }
         else
         {
-            if (GetCell(x + 1, y) != -1)
+            if (GetCellSourceId(0, new Vector2I(X + 1, Y)) != -1)
             {
-                Neighbours.Add(new Vector2(x + 1, y));
+                Neighbours.Add(new Vector2I(X + 1, Y));
             }
-            if (GetCell(x + 1, y + 1) != -1)
+            if (GetCellSourceId(0, new Vector2I(X + 1, Y + 1)) != -1)
             {
-                Neighbours.Add(new Vector2(x + 1, y + 1));
+                Neighbours.Add(new Vector2I(X + 1, Y + 1));
             }
-            if (GetCell(x - 1, y) != -1)
+            if (GetCellSourceId(0, new Vector2I(X - 1, Y)) != -1)
             {
-                Neighbours.Add(new Vector2(x - 1, y));
+                Neighbours.Add(new Vector2I(X - 1, Y));
             }
-            if (GetCell(x - 1, y + 1) != -1)
+            if (GetCellSourceId(0, new Vector2I(X - 1, Y + 1)) != -1)
             {
-                Neighbours.Add(new Vector2(x - 1, y + 1));
+                Neighbours.Add(new Vector2I(X - 1, Y + 1));
             }
         }
 
@@ -135,10 +136,10 @@ public class TileMap : Godot.TileMap
 
         if (!GetAllNeighbours)
         {
-            // Remove the neighbours containing a unit as they are impassible
+            // Remove the neighbours containing a unit as theY are impassible
             for (int i = Neighbours.Count - 1; i >= 0; i--)
             {
-                Vector2 Neighbour = Neighbours[i];
+                Vector2I Neighbour = Neighbours[i];
                 foreach (Unit Unit in CombatUnits)
                 {
                     if (Unit.CurrentCell == Neighbour)
@@ -156,19 +157,19 @@ public class TileMap : Godot.TileMap
         return Neighbours;
     }
 
-    public int Distance(Vector2 Cell1, Vector2 Cell2)
+    public int Distance(Vector2I Cell1, Vector2I Cell2)
     {
-        var AxialCell1 = new Vector2(Cell1.x, Cell1.y - (Cell1.x - ((int)Cell1.x & 1)) / 2);
-        var AxialCell2 = new Vector2(Cell2.x, Cell2.y - (Cell2.x - ((int)Cell2.x & 1)) / 2);
+        var AXialCell1 = new Vector2I(Cell1.X, Cell1.Y - (Cell1.X - ((int)Cell1.X & 1)) / 2);
+        var AXialCell2 = new Vector2I(Cell2.X, Cell2.Y - (Cell2.X - ((int)Cell2.X & 1)) / 2);
 
-        var Dist = (Mathf.Abs(AxialCell1.x - AxialCell2.x) + Mathf.Abs(AxialCell1.x + AxialCell1.y - AxialCell2.x - AxialCell2.y) + Mathf.Abs(AxialCell1.y - AxialCell2.y)) / 2;
+        var Dist = (Mathf.Abs(AXialCell1.X - AXialCell2.X) + Mathf.Abs(AXialCell1.X + AXialCell1.Y - AXialCell2.X - AXialCell2.Y) + Mathf.Abs(AXialCell1.Y - AXialCell2.Y)) / 2;
 
         return (int)Dist;
     }
 
-    public Godot.Collections.Array<Vector2> ReconstructPath(Godot.Collections.Dictionary<Vector2, Vector2> CameFrom, Vector2 Current)
+    public Godot.Collections.Array<Vector2I> ReconstructPath(Godot.Collections.Dictionary<Vector2I, Vector2I> CameFrom, Vector2I Current)
     {
-        var TotalPath = new Godot.Collections.Array<Vector2>();
+        var TotalPath = new Godot.Collections.Array<Vector2I>();
         TotalPath.Add(Current);
         while (CameFrom.Keys.Contains(Current))
         {
@@ -178,22 +179,22 @@ public class TileMap : Godot.TileMap
         return TotalPath;
     }
 
-    public Godot.Collections.Array<Vector2> AStar(Vector2 Start, Vector2 End)
+    public Godot.Collections.Array<Vector2I> AStar3D(Vector2I Start, Vector2I End)
     {
-        var OpenSet = new Godot.Collections.Array<Vector2>();
+        var OpenSet = new Godot.Collections.Array<Vector2I>();
         OpenSet.Add(Start);
 
-        var CameFrom = new Godot.Collections.Dictionary<Vector2, Vector2>();
+        var CameFrom = new Godot.Collections.Dictionary<Vector2I, Vector2I>();
 
-        var GScore = new Godot.Collections.Dictionary<Vector2, int>();
+        var GScore = new Godot.Collections.Dictionary<Vector2I, int>();
         GScore[Start] = 0;
 
-        var FScore = new Godot.Collections.Dictionary<Vector2, int>();
+        var FScore = new Godot.Collections.Dictionary<Vector2I, int>();
         FScore[Start] = Distance(Start, End);
 
         while (OpenSet.Count > 0)
         {
-            Vector2 Current = OpenSet[0];
+            Vector2I Current = OpenSet[0];
 
             // DUE TO CHANGING THE BELOW LINE ASTAR NOW FINDS ANY TILE AT DISTANCE ONE FROM THE TARGET
             if (Distance(Current, End) == 1)
@@ -203,7 +204,7 @@ public class TileMap : Godot.TileMap
 
             OpenSet.Remove(Current);
 
-            foreach (Vector2 Neighbour in GetNeighbours(Current))
+            foreach (Vector2I Neighbour in GetNeighbours(Current))
             {
                 int TentativeGScore = 9999;
                 if (GScore.ContainsKey(Current))
@@ -238,29 +239,29 @@ public class TileMap : Godot.TileMap
         {
             for (int j = 0; j < 10; j++)
             {
-                if (GetCell(i, j) != -1)
+                if (GetCellSourceId(0, new Vector2I(i, j)) != -1)
                 {
-                    SetCell(i, j, 0);
+                    SetCell(0, new Vector2I(i, j), 0);
                 }
             }
         }
     }
 
-    public void ResetAllCellColoursExcept(Vector2 Cell)
+    public void ResetAllCellColoursExcept(Vector2I Cell)
     {
         for (int i = 0; i < 30; i++)
         {
             for (int j = 0; j < 30; j++)
             {
-                if (!(i == Cell.x && j == Cell.y) && GetCell(i, j) != -1)
+                if (!(i == Cell.X && j == Cell.Y) && GetCellSourceId(0, new Vector2I(i, j)) != -1)
                 {
-                    SetCell(i, j, 0);
+                    SetCell(0, new Vector2I(i, j), 0);
                 }
             }
         }
     }
 
-    public Unit GetUnitOnTile(Vector2 Tile)
+    public Unit GetUnitOnTile(Vector2I Tile)
     {
         foreach (Unit Unit in Units)
         {
@@ -287,9 +288,9 @@ public class TileMap : Godot.TileMap
         {
             for (int j = 0; j < 6; j++)
             {
-                if (GetCell(i, j) != -1)
+                if (GetCellSourceId(0, new Vector2I(i, j)) != -1)
                 {
-                    Tiles.Add(new Vector2(i, j));
+                    Tiles.Add(new Vector2I(i, j));
                 }
             }
         }
@@ -299,23 +300,23 @@ public class TileMap : Godot.TileMap
     public Unit CloneUnit(Unit Unit)
     {
         int UnitIndex = 0;
-        // Weird magic function to search the UnitScenes for the right index
+        // Weird magic function to search the UnitScenes for the right indeX
         for (int i = 0; i < UnitScenes.Count; i++)
         {
             PackedScene UnitScene = UnitScenes[i];
             Godot.Collections.Dictionary WeirdUnitSceneDictionary = UnitScene._Bundled;
-            String[] StringArray = WeirdUnitSceneDictionary["names"] as String[];
+            String[] StringArray = ((String[])WeirdUnitSceneDictionary["names"]);
             string UnitSceneUnitName = StringArray[0];
             if (UnitSceneUnitName == Unit.UnitName)
             {
                 UnitIndex = i;
             }
         }
-        Unit ClonedUnit = (Unit)UnitScenes[UnitIndex].Instance();
+        Unit ClonedUnit = (Unit)UnitScenes[UnitIndex].Instantiate();
         ClonedUnit.PlayerOwned = Unit.PlayerOwned;
         if (!ClonedUnit.PlayerOwned)
         {
-            ClonedUnit.Texture = (Texture)GD.Load("res://Hexagons/RedHexagon.png");
+            ClonedUnit.Texture = (Texture2D)GD.Load("res://HeXagons/RedHeXagon.png");
         }
         ClonedUnit.Health = Unit.Health;
         ClonedUnit.Damage = Unit.Damage;
@@ -340,8 +341,8 @@ public class TileMap : Godot.TileMap
     public void CollectUnitScenes()
     {
         UnitScenes = new Godot.Collections.Array<PackedScene>();
-        Directory Dir = new Directory();
-        Dir.Open("res://Scenes/Units");
+        using var Dir = DirAccess.Open("res://Scenes/Units");
+        // Dir.Open("res://Scenes/Units");
         Dir.ListDirBegin();
 
         while (true)
@@ -351,7 +352,7 @@ public class TileMap : Godot.TileMap
             {
                 break;
             }
-            if (!Scene.BeginsWith(".") && Scene != "Unit.tscn")
+            if (!Scene.StartsWith(".") && Scene != "Unit.tscn")
             {
                 PackedScene UnitScene = ResourceLoader.Load<PackedScene>("res://Scenes/Units/" + Scene);
                 UnitScenes.Add(UnitScene);

@@ -1,19 +1,19 @@
 using Godot;
 using System;
 
-public class CameraController : Camera2D
+public partial class CameraController : Camera2D
 {
-    [Signal] private delegate void ReachedLocation();
+    [Signal] public delegate void ReachedLocationEventHandler();
     private float TargetXPos = 0;
     private float SmoothSpeed = 2.5f;
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         base._Process(delta);
-        float PosDiff = TargetXPos - Position.x;
-        Vector2 SmoothedVelocity = new Vector2(PosDiff * SmoothSpeed * delta, 0);
+        float PosDiff = TargetXPos - Position.X;
+        Vector2 SmoothedVelocity = new Vector2(PosDiff * SmoothSpeed * (float)delta, 0);
         Position += SmoothedVelocity;
-        if (Math.Abs(Position.x - TargetXPos) < 2)
+        if (Math.Abs(Position.X - TargetXPos) < 2)
         {
             EmitSignal("ReachedLocation");
         }
